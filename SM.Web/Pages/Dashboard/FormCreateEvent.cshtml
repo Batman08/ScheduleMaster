@@ -1,50 +1,16 @@
-﻿<div class="marginTop25">
-    <div class="static-tile">
-        <div class="p-3">
-            <div class="p-4 pt-3 SM-tile" style="background: #f3f3f3;">
-                <h3 class="fw-bold text-primary pb-4"><i class="fa-regular fa-calendar-plus fw-bold"></i> Create Event</h3>
-                <form id="formCreateEvent" method="post">
-                    <div class="row mb-2">
-                        <div class="col-md-3 text-start ps-sm-2">
-                            <label for="txtTitle" class="col-form-label fw-bold ps-1 ps-md-3">Title:</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" id="txtTitle" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" required="" maxlength="50">
-                        </div>
-                    </div>
-
-                    <div class="row mb-2">
-                        <div class="col-md-3 text-start">
-                            <label for="txtDesc" class="col-form-label fw-bold ps-1 ps-md-3">Info:</label>
-                        </div>
-                        <div class="col-md-9">
-                            <textarea id="txtDesc" class="form-control" rows="3" maxlength="256" placeholder="Description" aria-label="Description" required=""></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-shadow ms-0 ms-md-3 mt-3"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<button type="button" id="btnChangeOrder" class="btn btn-primary mb-sm-0 mb-2" data-bs-toggle="modal" data-bs-target="#editStaticBackdrop"><i class="fas fa-arrows-alt"></i> Change Order</button>
-
-
-<div class="modal fade" id="editStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+﻿<div class="modal fade" id="modalCreateEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white fws-bold" id="exampleModalLabel"><i class="fa-regular fa-calendar-plus fw-bold"></i> Create Event</h5>
             </div>
             <div class="modal-body">
-                <div id="divEditModalLoadingPanel" class="pt-4 pb-5" style="display: none;">
+                <div id="divCreateEventModalLoadingPanel" class="pt-4 pb-5" style="display: none;">
                     <div class="text-center" style="color: lightgrey;">
                         <div class="display-2">
-                            <i class="fas fa-spinner fa-spin-filled" aria-hidden="true"></i>
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
                         </div>
-                        <div class="fw-bold fs-4">Loading Form...</div>
+                        <div class="fw-bold fs-4">Loading Event...</div>
                     </div>
                 </div>
                 <form id="formEditCard" method="post">
@@ -52,14 +18,14 @@
                         <!-- Title Field -->
                         <div class="mb-3">
                             <label for="txtTitle" class="form-label fw-bold">Title:</label>
-                            <input type="text" id="txtEditTitle" class="form-control" placeholder="Title" aria-label="Title" aria-describedby="basic-addon1" maxlength="50" required>
+                            <input type="text" id="txtTitle" class="form-control" placeholder="Event Title" aria-label="Event Title" aria-describedby="basic-addon1" maxlength="50" required>
                         </div>
 
 
                         <!-- Info Field -->
                         <div class="mb-3">
-                            <label for="txtEditDesc" class="form-label fw-bold">Info:</label>
-                            <textarea id="txtEditDesc" class="form-control" rows="3" maxlength="256" placeholder="Description" aria-label="Description" required></textarea>
+                            <label for="txtInfo" class="form-label fw-bold">Info:</label>
+                            <textarea id="txtInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
                         </div>
                     </div>
 
@@ -69,10 +35,7 @@
                         <span style="padding-right: 5px;">
                             <button type="button" class="btn btn-secondary btn-shadow" data-bs-dismiss="modal"><i class="fas fa-ban fa-fw"></i> Cancel</button>
                         </span>
-                        <button type="submit" class="btn btn-primary btn-shadow btn-block">
-                            <i class="fas fa-save"></i> Save
-                            changes
-                        </button>
+                        <button type="submit" class="btn btn-primary btn-shadow btn-block"><i class="fas fa-save"></i> Save</button>
                     </div>
                     <input type="hidden" id="hiddenData">
                 </form>
