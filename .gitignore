@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Typescript
+/SM.Web/wwwroot/js/**/*.js
+/SM.Web/wwwroot/js/**/*.js.map
