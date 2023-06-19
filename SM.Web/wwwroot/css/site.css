@@ -36,6 +36,19 @@ body {
     /*transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
 }
 
+.SM-tile{
+    background-color: #fff;
+    border-radius: 5px;
+    /* box-shadow: 0 1px 2px rgb(0 0 0 / 10%); */
+    /* box-shadow: 0 1px 15px rgb(0 0 0 / 10%); */
+    box-shadow: 0px 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.btn-shadow {
+    box-shadow: 2px 2px 4px 0 rgb(0 0 0 / 20%);
+}
+
 .boxes {
     --size: 32px;
     --duration: 800ms;
