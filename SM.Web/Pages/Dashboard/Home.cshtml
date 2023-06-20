@@ -7,8 +7,8 @@
 <div class="row mt-4">
     <div class="col-md-10 mx-auto">
         <button type="button" id="btnCreateEvent" class="float-end btn btn-primary mb-sm-0 mb-2" data-bs-toggle="modal" data-bs-target="#modalCreateEvent"><i class="fa-regular fa-calendar-plus fw-bold"></i> Create Event</button>
-        
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+        <ul class="nav nav-tabs" id="tabDays" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
             </li>
@@ -22,13 +22,20 @@
                 <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
             </li>
         </ul>
-        <div class="tab-content" id="myTabContent">
+        <div class="tab-content" id="tabContentDays">
             <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">...</div>
             <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">...</div>
             <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
             <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
         </div>
     </div>
+</div>
+
+<div style="display:none;">
+    <li id="dayTabEl" class="nav-item" role="presentation">
+        <button class="nav-link" id="btnDayTabEl" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="false"></button>
+    </li>
+    <div class="tab-pane fade" id="dayTabPaneEl" role="tabpanel" aria-labelledby="home-tab" tabindex="0"></div>
 </div>
 
 <div id="divNoEventsPanel" class="pt-4 pb-5">
@@ -50,3 +57,10 @@
 </div>
 
 <partial name="./FormCreateEvent.cshtml" />
+
+<script src="/js/SmEngine.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        SmEngine.Init();
+    });
+</script>
