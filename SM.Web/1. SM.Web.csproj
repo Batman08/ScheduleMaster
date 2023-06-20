@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SM.Engine\2. SM.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TypeScriptCompile Include="wwwroot\typescript\Utilities.ts" />
   </ItemGroup>
 

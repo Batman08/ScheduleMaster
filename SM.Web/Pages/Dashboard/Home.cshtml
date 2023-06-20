@@ -38,7 +38,7 @@
     <div class="tab-pane fade" id="dayTabPaneEl" role="tabpanel" aria-labelledby="home-tab" tabindex="0"></div>
 </div>
 
-<div id="divNoEventsPanel" class="pt-4 pb-5">
+<div id="divNoEventsPanel" class="pt-4 pb-5" style="display:none;">
     <div class="text-center">
         <div class="display-2">
             <i class="fa-solid fa-calendar-check fa-sm"></i>
@@ -58,6 +58,7 @@
 
 <partial name="./FormCreateEvent.cshtml" />
 
+<script src="/js/Utilities.js"></script>
 <script src="/js/SmEngine.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {

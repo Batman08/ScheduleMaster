@@ -13,19 +13,19 @@
                         <div class="fw-bold fs-4">Loading Event...</div>
                     </div>
                 </div>
-                <form id="formEditCard" method="post">
+                <form id="formCreateEvent" method="post">
                     <div class="p-3 pb-3 SM-tile" style="background: #f3f3f3; box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1);">
                         <!-- Title Field -->
                         <div class="mb-3">
-                            <label for="txtTitle" class="form-label fw-bold">Title:</label>
-                            <input type="text" id="txtTitle" class="form-control" placeholder="Event Title" aria-label="Event Title" aria-describedby="basic-addon1" maxlength="50" required>
+                            <label for="EventTitle" class="form-label fw-bold">Title:</label>
+                            <input type="text" id="EventTitle" name="EventTitle" class="form-control" placeholder="Event Title" aria-label="Event Title" aria-describedby="basic-addon1" maxlength="50" required>
                         </div>
 
 
                         <!-- Info Field -->
                         <div class="mb-3">
-                            <label for="txtInfo" class="form-label fw-bold">Info:</label>
-                            <textarea id="txtInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
+                            <label for="EventInfo" class="form-label fw-bold">Info:</label>
+                            <textarea id="EventInfo" name="EventInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
                         </div>
                     </div>
 
