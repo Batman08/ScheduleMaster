@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SM.Database.DashboardCommandsQueries;
+﻿using SM.Database.DashboardCommandsQueries;
 
 namespace SM.Database
 {
     public interface ISmRepository
     {
-        public SmEventDataDTO spSaveUserEvent(SmEventDataDTO smData);
+        public void spSaveUserEvent(SmEventDataDTO smData);
     }
 
     public class SMRepository : ISmRepository
@@ -17,16 +16,22 @@ namespace SM.Database
             _smContext = context;
         }
 
-        public SmEventDataDTO spSaveUserEvent(SmEventDataDTO smData)
+        public void spSaveUserEvent(SmEventDataDTO smData)
         {
-            //SqlParameter p_UserId = new SqlParameter("@param", smData.UserId);
-            //SqlParameter p_Title = new SqlParameter("@param", smData.Title);
-            //SqlParameter p_Info = new SqlParameter("@param", smData.Info);
-            //SqlParameter p_Start = new SqlParameter("@param", smData.Start);
-            //SqlParameter p_End = new SqlParameter("@param", smData.End);
-            //SqlParameter p_Colour = new SqlParameter("@param", smData.Colour);
+            var itemToAdd = new EventData
+            {
+                EventDataId = Guid.NewGuid().ToString(),
+                UserId = smData.UserId.ToString(),
+                Title = smData.Title,
+                Info = smData.Info,
+                Start = smData.Start,
+                End = smData.End,
+                Colour = smData.Colour
+            };
 
-            return _smContext.SaveEventData.FromSqlRaw($"EXECUTE dbo.spSaveUserEvent {smData.UserId}, {smData.Title}, {smData.Info}, {smData.Start}, {smData.UserId}").AsEnumerable().First();
+            _smContext.SaveEventData.Add(itemToAdd);
+            _smContext.SaveChanges();
+            //_smContext.SaveEventData.FromSqlRaw($"EXECUTE dbo.spSaveUserEvent {smData.UserId}, {smData.Title}, {smData.Info}, {smData.Start}, {smData.UserId}").AsEnumerable().First();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SM.Database.DashboardCommandsQueries;
 
 namespace SM.Database
 {
@@ -12,6 +11,6 @@ namespace SM.Database
             //modelBuilder.Entity<SmEventDataDTO>().HasNoKey();
         }
 
-        public DbSet<SmEventDataDTO> SaveEventData { get; set; }
+        public DbSet<EventData> SaveEventData { get; set; }
     }
 }
