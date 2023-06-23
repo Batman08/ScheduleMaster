@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SM.Engine.Dashboard;
+using SM.Database.DashboardCommandsQueries;
 
 namespace SM.Database
 {

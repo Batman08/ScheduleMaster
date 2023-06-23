@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SM.Engine.Dashboard;
+using SM.Database.DashboardCommandsQueries;
 
 namespace SM.Database
 {
@@ -26,7 +26,7 @@ namespace SM.Database
             //SqlParameter p_End = new SqlParameter("@param", smData.End);
             //SqlParameter p_Colour = new SqlParameter("@param", smData.Colour);
 
-            return _smContext.SaveEventData.FromSqlRaw("EXECUTE dbo.spGetMedicalPersons", smData).AsEnumerable().First();
+            return _smContext.SaveEventData.FromSqlRaw($"EXECUTE dbo.spSaveUserEvent {smData.UserId}, {smData.Title}, {smData.Info}, {smData.Start}, {smData.UserId}").AsEnumerable().First();
         }
     }
 }

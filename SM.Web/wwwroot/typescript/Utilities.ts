@@ -6,4 +6,30 @@
         xhr.ontimeout = () => alert("Hide Load Icon");
         xhr.send(JSON.stringify(body));
     }
+
+    public static SetCookie(cname, value, exdays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+
+        var cvalue = value + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString());
+        document.cookie = cname + "=" + cvalue;
+    }
+
+    public static GetCookie(cname) {
+        var value = "";
+        if (document.cookie) {
+            var index = document.cookie.indexOf(cname);
+            if (index != -1) {
+                var namestart = (document.cookie.indexOf("=", index) + 1);
+                var nameend = document.cookie.indexOf(";", index);
+                if (nameend == -1) { nameend = document.cookie.length; }
+                value = document.cookie.substring(namestart, nameend);
+            }
+        }
+        return value;
+    }
+
+    public static DeleteCookie = function (cname) {
+        Utilities.SetCookie(cname, '', -1);
+    }
 }

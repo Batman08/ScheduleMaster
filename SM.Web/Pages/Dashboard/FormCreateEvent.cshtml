@@ -27,6 +27,24 @@
                             <label for="EventInfo" class="form-label fw-bold">Info:</label>
                             <textarea id="EventInfo" name="EventInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
                         </div>
+
+                        <!-- Start & End-->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="EventStart" class="form-label fw-bold">Start:</label>
+                                <input type="time" class="form-control" id="EventStart" name="EventStart">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="EventEnd" class="form-label fw-bold">End:</label>
+                                <input type="time" class="form-control" id="EventEnd" name="EventEnd">
+                            </div>
+                        </div>
+
+                        <!-- Colour Field -->
+                        <div class="mb-3">
+                            <label for="EventColour" class="form-label fw-bold">Colour:</label>
+                            <input type="color" class="form-control form-control-color w-100" id="EventColour" name="EventColour" value="#563d7c" title="Choose your color">
+                        </div>
                     </div>
 
                     <hr />

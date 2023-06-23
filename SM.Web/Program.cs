@@ -1,8 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using SM.Database;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+builder.Services.AddDbContext<SMContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ScheduleMaster")));
+builder.Services.AddScoped<ISmRepository, SMRepository>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
