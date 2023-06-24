@@ -9,29 +9,28 @@ namespace SM.Database
 
     public class SMRepository : ISmRepository
     {
-        private readonly SMContext _smContext;
+        private readonly MyDbContext _smContext;
 
-        public SMRepository(SMContext context)
+        public SMRepository(MyDbContext context)
         {
             _smContext = context;
         }
 
         public void spSaveUserEvent(SmEventDataDTO smData)
         {
-            var itemToAdd = new EventData
-            {
-                EventDataId = Guid.NewGuid().ToString(),
-                UserId = smData.UserId.ToString(),
-                Title = smData.Title,
-                Info = smData.Info,
-                Start = smData.Start,
-                End = smData.End,
-                Colour = smData.Colour
-            };
+            //var itemToAdd = new EventData
+            //{
+            //    EventDataId = Guid.NewGuid().ToString(),
+            //    UserId = smData.UserId.ToString(),
+            //    Title = smData.Title,
+            //    Info = smData.Info,
+            //    Start = smData.Start,
+            //    End = smData.End,
+            //    Colour = smData.Colour
+            //};
+            //_smContext.SaveChanges();
 
-            _smContext.SaveEventData.Add(itemToAdd);
-            _smContext.SaveChanges();
-            //_smContext.SaveEventData.FromSqlRaw($"EXECUTE dbo.spSaveUserEvent {smData.UserId}, {smData.Title}, {smData.Info}, {smData.Start}, {smData.UserId}").AsEnumerable().First();
+            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Title, smData.Title, smData.Start, smData.End, smData.Colour);
         }
     }
 }
