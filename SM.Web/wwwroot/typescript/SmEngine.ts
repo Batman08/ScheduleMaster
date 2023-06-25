@@ -45,7 +45,7 @@ class SmEngine {
         return this._days.indexOf(selectedDay) >= 0;
     }
 
-    
+
     //#region Create
     private Display_DayTabs(): void {
         this._tabDays.innerHTML = "";
@@ -82,6 +82,10 @@ class SmEngine {
         dayPaneListGroupEl.id = `${day}ListGroupEl`;
         daytabPaneEl.appendChild(dayPaneListGroupEl);
 
+        const loadingPanel = document.querySelector('#divEventsLoadingPanel').cloneNode(true) as HTMLDivElement;
+        loadingPanel.id = loadingPanel.id + day;
+        daytabPaneEl.appendChild(loadingPanel);
+
         this._tabDays.appendChild(dayTabEl);
         this._tabContentDays.appendChild(daytabPaneEl);
     }
@@ -94,7 +98,7 @@ class SmEngine {
         if (!this.CurrentDayCheck(this._currentDay)) {
             alert("error selected day does not exist");
         };
-        
+
         const formData: FormData = new FormData(form);
 
         const dataToServer: SmEventDataDTO = {
@@ -132,30 +136,44 @@ class SmEngine {
         xhr.setRequestHeader('Content-type', 'application/json');
         xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_UserEvents(JSON.parse(xhr.response)) : console.log(xhr, "Failed on Load_UserEvents");
         Utilities.Sm_XMLHttpRequest(xhr, null);
-
-        //this.LoadFromServerDone_UserEvents();
     }
 
     private LoadFromServerDone_UserEvents(eventReturnData: SmEventReturnDataDTO[]): void {
+        alert("load elements");
+
+        //remove loading panels
+        this._days.forEach(day => {
+            document.querySelector(`#divEventsLoadingPanel${day}`).remove();
+        });
+        
         eventReturnData.forEach(eventData => {
             const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
             _dayPaneListGroupItemEl.id = ``;
-            _dayPaneListGroupItemEl.querySelector("#Title").textContent = eventData.Title;
-            _dayPaneListGroupItemEl.querySelector("#Info").textContent = eventData.Info;
+            _dayPaneListGroupItemEl.style.backgroundColor = eventData.Colour;
+            
+            const textColour: string = Utilities.GetTextColourContrast(eventData.Colour);
+            const titleEl = _dayPaneListGroupItemEl.querySelector("#Title") as HTMLHeadElement;
+            titleEl.textContent = eventData.Title;
+            titleEl.style.color = textColour;
+
+            const infoEl = _dayPaneListGroupItemEl.querySelector("#Info") as HTMLParagraphElement;
+            infoEl.textContent = eventData.Info;
+            infoEl.style.color = textColour;
+
+            //add onclick event
 
             const dayPaneListGroupEl = document.querySelector(`#${eventData.Day}ListGroupEl`);
-            dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);            
+            dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
         });
 
-        //this._days.forEach(day => {
-        //    const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
-        //    _dayPaneListGroupItemEl.id = ``;
-        //    _dayPaneListGroupItemEl.querySelector("#Title").textContent = day;
-        //    _dayPaneListGroupItemEl.querySelector("#Info").textContent = "";
+        this._days.forEach(day => {
+            const dayPaneListGroupEl = document.querySelector(`#${day}ListGroupEl`);
+            if (dayPaneListGroupEl.childElementCount > 0) return;
 
-        //    const dayPaneListGroupEl = document.querySelector(`#${day}ListGroupEl`);
-        //    dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
-        //});
+            const noEventsPanel = document.querySelector(`#divNoEventsPanel`).cloneNode(true) as HTMLDivElement;
+            noEventsPanel.id = noEventsPanel.id + day;
+            dayPaneListGroupEl.appendChild(noEventsPanel);
+        });
     }
     //#endregion
 }
