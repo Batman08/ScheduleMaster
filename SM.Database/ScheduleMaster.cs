@@ -89,7 +89,7 @@ namespace SM.Database
         List<SpGetUserEventsReturnModel> SpGetUserEvents(string pUserId, out int procResult);
         Task<List<SpGetUserEventsReturnModel>> SpGetUserEventsAsync(string pUserId);
 
-        int SpSaveUserEvent(string pUserId, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
+        int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
         // SpSaveUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
     }
@@ -181,11 +181,15 @@ namespace SM.Database
             return procResultData;
         }
 
-        public int SpSaveUserEvent(string pUserId, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        public int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
         {
             var pUserIdParam = new SqlParameter { ParameterName = "@p_UserId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pUserId, Size = 256 };
             if (pUserIdParam.Value == null)
                 pUserIdParam.Value = DBNull.Value;
+
+            var pDayParam = new SqlParameter { ParameterName = "@p_Day", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pDay, Size = 25 };
+            if (pDayParam.Value == null)
+                pDayParam.Value = DBNull.Value;
 
             var pTitleParam = new SqlParameter { ParameterName = "@p_Title", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pTitle, Size = 256 };
             if (pTitleParam.Value == null)
@@ -209,7 +213,7 @@ namespace SM.Database
 
             var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
 
-            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[spSaveUserEvent] @p_UserId, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour", pUserIdParam, pTitleParam, pInfoParam, pStartParam, pEndParam, pColourParam, procResultParam);
+            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[spSaveUserEvent] @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour", pUserIdParam, pDayParam, pTitleParam, pInfoParam, pStartParam, pEndParam, pColourParam, procResultParam);
 
             return (int)procResultParam.Value;
         }
@@ -467,7 +471,7 @@ namespace SM.Database
             return Task.FromResult(SpGetUserEvents(pUserId, out procResult));
         }
 
-        public int SpSaveUserEvent(string pUserId, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        public int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
         {
             return 0;
         }
@@ -960,6 +964,7 @@ namespace SM.Database
     {
         public string EventDataId { get; set; } // EventDataId (Primary key) (length: 256)
         public string UserId { get; set; } // UserId (Primary key) (length: 256)
+        public string Day { get; set; } // Day (length: 25)
         public string Title { get; set; } // Title (Primary key) (length: 256)
         public string Info { get; set; } // Info (length: 256)
         public string Start { get; set; } // Start (Primary key) (length: 256)
@@ -1013,6 +1018,7 @@ namespace SM.Database
 
             builder.Property(x => x.EventDataId).HasColumnName(@"EventDataId").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
             builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
+            builder.Property(x => x.Day).HasColumnName(@"Day").HasColumnType("nvarchar(25)").IsRequired(false).HasMaxLength(25);
             builder.Property(x => x.Title).HasColumnName(@"Title").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
             builder.Property(x => x.Info).HasColumnName(@"Info").HasColumnType("nvarchar(256)").IsRequired(false).HasMaxLength(256);
             builder.Property(x => x.Start).HasColumnName(@"Start").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
@@ -1050,6 +1056,7 @@ namespace SM.Database
     public class SpGetUserEventsReturnModel
     {
         public string EventDataId { get; set; }
+        public string Day { get; set; }
         public string Title { get; set; }
         public string Info { get; set; }
         public string Start { get; set; }

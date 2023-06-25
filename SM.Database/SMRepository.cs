@@ -5,6 +5,7 @@ namespace SM.Database
     public interface ISmRepository
     {
         public void spSaveUserEvent(SmEventDataDTO smData);
+        public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId);
     }
 
     public class SMRepository : ISmRepository
@@ -18,19 +19,12 @@ namespace SM.Database
 
         public void spSaveUserEvent(SmEventDataDTO smData)
         {
-            //var itemToAdd = new EventData
-            //{
-            //    EventDataId = Guid.NewGuid().ToString(),
-            //    UserId = smData.UserId.ToString(),
-            //    Title = smData.Title,
-            //    Info = smData.Info,
-            //    Start = smData.Start,
-            //    End = smData.End,
-            //    Colour = smData.Colour
-            //};
-            //_smContext.SaveChanges();
+            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Day, smData.Title, smData.Title, smData.Start, smData.End, smData.Colour);
+        }
 
-            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Title, smData.Title, smData.Start, smData.End, smData.Colour);
+        public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId)
+        {
+            return _smContext.SpGetUserEvents(UserId).ToList();
         }
     }
 }

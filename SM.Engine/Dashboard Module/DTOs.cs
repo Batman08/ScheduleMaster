@@ -2,6 +2,7 @@
 {
     public class SmEventItemDTO
     {
+        public string Day { get; set; } = "";
         public string Title { get; set; } = "";
         public string Info { get; set; } = "";
         public string Start { get; set; } = "";

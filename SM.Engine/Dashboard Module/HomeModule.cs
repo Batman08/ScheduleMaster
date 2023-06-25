@@ -6,10 +6,12 @@ namespace SM.Engine.DashboardModule
     public class HomeModule
     {
         private ISmRepository _smRepository;
+        private DashboardCommandsQueries _dashboardCommandsQueries;
 
         public HomeModule(ISmRepository smRepository)
         {
             _smRepository = smRepository;
+            _dashboardCommandsQueries = new DashboardCommandsQueries(_smRepository);
         }
 
         public void SmSaveUserEvent(SmEventItemDTO smData)
@@ -17,14 +19,19 @@ namespace SM.Engine.DashboardModule
             var dataToSave = new SmEventDataDTO
             {
                 UserId = new Guid("F5CF2364-5ACF-4360-B9C6-4BC9636B87BF"),
+                Day = smData.Day,
                 Title = smData.Title,
                 Info = smData.Info,
                 Start = smData.Start,
                 End = smData.End,
                 Colour = smData.Colour
             };
-            var dashboard = new DashboardCommandsQueries(_smRepository);
-            dashboard.SaveEvent(dataToSave);
+            _dashboardCommandsQueries.SaveEvent(dataToSave);
+        }
+
+        public List<SpGetUserEventsReturnModel> SmLoadUserEvents()
+        {
+            return _dashboardCommandsQueries.LoadEvents("f5cf2364-5acf-4360-b9c6-4bc9636b87bf");
         }
     }
 }

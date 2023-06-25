@@ -27,11 +27,10 @@ namespace SM.Web.Pages.Dashboard
             return new JsonResult(smData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public JsonResult OnPostLoadEvent()
+        public JsonResult OnPostLoadEvents()
         {
-            //Request.Cookies
-            //_dashboard.SmSaveUserEvent(smData);
-            return new JsonResult(Request.Cookies["Key"], new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            //Request.Cookies["Key"]
+            return new JsonResult(_homeModule.SmLoadUserEvents(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }
