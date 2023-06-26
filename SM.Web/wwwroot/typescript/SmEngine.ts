@@ -16,10 +16,11 @@ class SmEngine {
     private _days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     private _currentDay: string = 'Monday';
 
+    private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
+    //private readonly _modalEditEvent= Utilities.BTSP_GetModal('modalEditEvent');
+
     private Init(): void {
-        //if (Utilities.GetCookie("")) {
-        //    Utilities.SetCookie("", '', -1);
-        //}
+        this.Init_EventModals();
         this.Display_DayTabs();
         this.GetCurrentTabDay();
         this.LoadFromServer_UserEvents();
@@ -43,6 +44,15 @@ class SmEngine {
     private CurrentDayCheck(selectedDay: string): boolean {
         //check if _days contains value of selectedDay
         return this._days.indexOf(selectedDay) >= 0;
+    }
+
+    private Init_EventModals(): void {
+        const btnCreateEvent = document.querySelector('#btnCreateEvent') as HTMLButtonElement;
+        btnCreateEvent.onclick = () => {
+            //clear form
+            (document.querySelector('#formCreateEvent') as HTMLFormElement).reset();
+            this._modalCreateEvent.show();
+        }
     }
 
 
@@ -116,8 +126,38 @@ class SmEngine {
         xhr.open('POST', this._urlCreateEvent);
         xhr.setRequestHeader("XSRF-TOKEN", verficationToken);
         xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => xhr.status === 200 ? console.log(JSON.parse(xhr.response)) : console.log(xhr, "Failed on HandleSubmit_CreateEvent");
+        xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_CreateEvent(JSON.parse(xhr.response), form) : console.log(xhr, "Failed on HandleSubmit_CreateEvent");
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
+    }
+
+    private LoadFromServerDone_CreateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement): void {
+        const dayPaneListGroupEl = document.querySelector(`#${eventReturnData.Day}ListGroupEl`);
+
+        //Remove No Events Panel If Exits
+        const noEventsPanel = document.querySelector(`#divNoEventsPanel${eventReturnData.Day}`) as HTMLDivElement;
+        if (noEventsPanel !== null) noEventsPanel.remove();
+
+        const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
+        _dayPaneListGroupItemEl.id = ``;
+        _dayPaneListGroupItemEl.style.backgroundColor = eventReturnData.Colour;
+
+        const textColour: string = Utilities.GetTextColourContrast(eventReturnData.Colour);
+        const titleEl = _dayPaneListGroupItemEl.querySelector("#Title") as HTMLHeadElement;
+        titleEl.textContent = eventReturnData.Title;
+        titleEl.style.color = textColour;
+
+        const infoEl = _dayPaneListGroupItemEl.querySelector("#Info") as HTMLParagraphElement;
+        infoEl.textContent = eventReturnData.Info;
+        infoEl.style.color = textColour;
+
+        //todo: add onclick event
+
+        dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
+
+        this._modalCreateEvent.hide();
+
+        //clear form
+        form.reset();
     }
 
     private BindSubmit_CreateEvent(): void {
@@ -139,18 +179,16 @@ class SmEngine {
     }
 
     private LoadFromServerDone_UserEvents(eventReturnData: SmEventReturnDataDTO[]): void {
-        alert("load elements");
-
         //remove loading panels
         this._days.forEach(day => {
             document.querySelector(`#divEventsLoadingPanel${day}`).remove();
         });
-        
+
         eventReturnData.forEach(eventData => {
             const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
             _dayPaneListGroupItemEl.id = ``;
             _dayPaneListGroupItemEl.style.backgroundColor = eventData.Colour;
-            
+
             const textColour: string = Utilities.GetTextColourContrast(eventData.Colour);
             const titleEl = _dayPaneListGroupItemEl.querySelector("#Title") as HTMLHeadElement;
             titleEl.textContent = eventData.Title;
@@ -160,12 +198,21 @@ class SmEngine {
             infoEl.textContent = eventData.Info;
             infoEl.style.color = textColour;
 
+            const startTimeEl = _dayPaneListGroupItemEl.querySelector("#StartTime") as HTMLHeadingElement;
+            startTimeEl.textContent = eventData.Start;
+            startTimeEl.style.color = textColour;
+
+            const endTimeEl = _dayPaneListGroupItemEl.querySelector("#EndTime") as HTMLHeadingElement;
+            endTimeEl.textContent = eventData.End;
+            endTimeEl.style.color = textColour;
+
             //add onclick event
 
             const dayPaneListGroupEl = document.querySelector(`#${eventData.Day}ListGroupEl`);
             dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
         });
 
+        //Remove No Events Panel If Exits
         this._days.forEach(day => {
             const dayPaneListGroupEl = document.querySelector(`#${day}ListGroupEl`);
             if (dayPaneListGroupEl.childElementCount > 0) return;

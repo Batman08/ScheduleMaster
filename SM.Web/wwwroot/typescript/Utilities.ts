@@ -40,4 +40,20 @@
     public static DeleteCookie = function (cname) {
         Utilities.SetCookie(cname, '', -1);
     }
+
+    
+    /*  Bootstrap Modals  */
+
+    public static BTSP_GetModal(selector: string): bootstrap.Modal {
+        const modalElement = document.querySelector(selector) as HTMLDivElement
+        return new bootstrap.Modal(modalElement);
+    }
+
+    public static BTSP_OpenModal(modal: bootstrap.Modal): void {
+        modal.show();
+    }
+
+    public static BTSP_CloseModal(modal: bootstrap.Modal): void {
+        modal.hide();
+    }
 }
