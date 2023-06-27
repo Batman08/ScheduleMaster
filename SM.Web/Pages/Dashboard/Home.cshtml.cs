@@ -17,19 +17,25 @@ namespace SM.Web.Pages.Dashboard
             _homeModule = new HomeModule(_smRepository);
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            //check if user is authorized otherwise redirect to login page
+            if (!User.Identity!.IsAuthenticated || User.Identity == null)
+            {
+                return LocalRedirect(Url.Content("~/Identity/Account/Login"));
+            }
+            return Page();
         }
 
         public JsonResult OnPostCreateEvent([FromBody] SmEventItemDTO smData)
         {
+            smData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
             _homeModule.SmSaveUserEvent(smData);
             return new JsonResult(smData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public JsonResult OnPostLoadEvents()
         {
-            //Request.Cookies["Key"]
             return new JsonResult(_homeModule.SmLoadUserEvents(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }

@@ -2,6 +2,7 @@
 {
     public class SmEventItemDTO
     {
+        public Guid UserId { get; set; } = Guid.Empty;
         public string Day { get; set; } = "";
         public string Title { get; set; } = "";
         public string Info { get; set; } = "";
