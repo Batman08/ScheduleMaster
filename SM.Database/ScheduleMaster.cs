@@ -38,7 +38,6 @@ namespace SM.Database
     public interface IMyDbContext : IDisposable
     {
         DbSet<EventData> EventDatas { get; set; } // EventData
-        DbSet<User> Users { get; set; } // Users
 
         int SaveChanges();
         int SaveChanges(bool acceptAllChangesOnSuccess);
@@ -114,7 +113,6 @@ namespace SM.Database
         }
 
         public DbSet<EventData> EventDatas { get; set; } // EventData
-        public DbSet<User> Users { get; set; } // Users
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -138,7 +136,6 @@ namespace SM.Database
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new EventDataConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
             modelBuilder.Entity<SpGetUserEventsReturnModel>().HasNoKey();
         }
@@ -245,14 +242,12 @@ namespace SM.Database
     public class FakeMyDbContext : IMyDbContext
     {
         public DbSet<EventData> EventDatas { get; set; } // EventData
-        public DbSet<User> Users { get; set; } // Users
 
         public FakeMyDbContext()
         {
             _database = new FakeDatabaseFacade(new MyDbContext());
 
             EventDatas = new FakeDbSet<EventData>("EventDataId", "UserId", "Title", "Start", "End", "Colour");
-            Users = new FakeDbSet<User>("UserId");
 
         }
 
@@ -963,40 +958,13 @@ namespace SM.Database
     public class EventData
     {
         public string EventDataId { get; set; } // EventDataId (Primary key) (length: 256)
-        public string UserId { get; set; } // UserId (Primary key) (length: 256)
+        public string UserId { get; set; } // UserId (Primary key) (length: 450)
         public string Day { get; set; } // Day (length: 25)
         public string Title { get; set; } // Title (Primary key) (length: 256)
         public string Info { get; set; } // Info (length: 256)
         public string Start { get; set; } // Start (Primary key) (length: 256)
         public string End { get; set; } // End (Primary key) (length: 256)
         public string Colour { get; set; } // Colour (Primary key) (length: 256)
-
-        // Foreign keys
-
-        /// <summary>
-        /// Parent User pointed by [EventData].([UserId]) (FK_EventData_Users)
-        /// </summary>
-        public User User { get; set; } // FK_EventData_Users
-    }
-
-    // Users
-    public class User
-    {
-        public string UserId { get; set; } // UserId (Primary key) (length: 256)
-        public string Username { get; set; } // Username (length: 256)
-        public string Password { get; set; } // Password (length: 256)
-
-        // Reverse navigation
-
-        /// <summary>
-        /// Child EventDatas where [EventData].[UserId] point to this entity (FK_EventData_Users)
-        /// </summary>
-        public ICollection<EventData> EventDatas { get; set; } // EventData.FK_EventData_Users
-
-        public User()
-        {
-            EventDatas = new List<EventData>();
-        }
     }
 
 
@@ -1017,30 +985,13 @@ namespace SM.Database
             builder.HasKey(x => new { x.EventDataId, x.UserId, x.Title, x.Start, x.End, x.Colour });
 
             builder.Property(x => x.EventDataId).HasColumnName(@"EventDataId").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
-            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
+            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("nvarchar(450)").IsRequired().HasMaxLength(450).ValueGeneratedNever();
             builder.Property(x => x.Day).HasColumnName(@"Day").HasColumnType("nvarchar(25)").IsRequired(false).HasMaxLength(25);
             builder.Property(x => x.Title).HasColumnName(@"Title").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
             builder.Property(x => x.Info).HasColumnName(@"Info").HasColumnType("nvarchar(256)").IsRequired(false).HasMaxLength(256);
             builder.Property(x => x.Start).HasColumnName(@"Start").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
             builder.Property(x => x.End).HasColumnName(@"End").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
             builder.Property(x => x.Colour).HasColumnName(@"Colour").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
-
-            // Foreign keys
-            builder.HasOne(a => a.User).WithMany(b => b.EventDatas).HasForeignKey(c => c.UserId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_EventData_Users");
-        }
-    }
-
-    // Users
-    public class UserConfiguration : IEntityTypeConfiguration<User>
-    {
-        public void Configure(EntityTypeBuilder<User> builder)
-        {
-            builder.ToTable("Users", "dbo");
-            builder.HasKey(x => x.UserId).HasName("PK_Users").IsClustered();
-
-            builder.Property(x => x.UserId).HasColumnName(@"UserId").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256).ValueGeneratedNever();
-            builder.Property(x => x.Username).HasColumnName(@"Username").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256);
-            builder.Property(x => x.Password).HasColumnName(@"Password").HasColumnType("nvarchar(256)").IsRequired().HasMaxLength(256);
         }
     }
 

@@ -47,6 +47,13 @@ body {
     box-shadow: 2px 2px 4px 0 rgb(0 0 0 / 20%);
 }
 
+.formRegisterPanel {
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 11px;
+    /*font-family: "Inter", sans-serif;*/
+}
+
 .boxes {
     --size: 32px;
     --duration: 800ms;

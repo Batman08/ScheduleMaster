@@ -13,8 +13,8 @@ BEGIN
 
 	SELECT ev.EventDataId, ev.[Day], ev.Title, ev.Info, ev.[Start], ev.[End], ev.Colour
 	FROM [EventData] ev
-		INNER JOIN Users u ON ev.UserId = u.UserId
-	WHERE u.UserId = @p_UserId
+		INNER JOIN AspNetUsers u ON ev.UserId = u.Id
+	WHERE u.Id = @p_UserId
 	ORDER BY ev.[Start], ev.[End];
 END;
 GO
