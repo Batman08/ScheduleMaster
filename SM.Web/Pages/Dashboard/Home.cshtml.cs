@@ -36,7 +36,8 @@ namespace SM.Web.Pages.Dashboard
 
         public JsonResult OnPostLoadEvents()
         {
-            return new JsonResult(_homeModule.SmLoadUserEvents(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var userId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
+            return new JsonResult(_homeModule.SmLoadUserEvents(userId), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }

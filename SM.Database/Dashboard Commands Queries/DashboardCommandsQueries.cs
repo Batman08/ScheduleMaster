@@ -16,9 +16,9 @@ namespace SM.Database.DashboardCommandsQueries
             _smRepository.spSaveUserEvent(smData);
         }
 
-        public List<SpGetUserEventsReturnModel> LoadEvents(string UserId)
+        public List<SpGetUserEventsReturnModel> LoadEvents(Guid userId)
         {
-            return _smRepository.spLoadUserEvents(UserId);
+            return _smRepository.spLoadUserEvents(userId.ToString());
         }
     }
 }

@@ -29,9 +29,9 @@ namespace SM.Engine.DashboardModule
             _dashboardCommandsQueries.SaveEvent(dataToSave);
         }
 
-        public List<SpGetUserEventsReturnModel> SmLoadUserEvents()
+        public List<SpGetUserEventsReturnModel> SmLoadUserEvents(Guid userId)
         {
-            return _dashboardCommandsQueries.LoadEvents("f5cf2364-5acf-4360-b9c6-4bc9636b87bf");
+            return _dashboardCommandsQueries.LoadEvents(userId);
         }
     }
 }
