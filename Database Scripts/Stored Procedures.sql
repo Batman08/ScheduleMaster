@@ -31,7 +31,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-	SELECT ev.[Day], ev.Title, ev.Info, ev.[Start], ev.[End], ev.Colour
+	SELECT ev.EventDataId, ev.[Day], ev.Title, ev.Info, ev.[Start], ev.[End], ev.Colour
 	FROM [EventData] ev
 		INNER JOIN AspNetUsers u ON ev.UserId = u.Id
 	WHERE ev.EventDataId=@p_EventDataId AND u.Id=@p_UserId;

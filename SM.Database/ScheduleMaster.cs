@@ -1074,6 +1074,7 @@ namespace SM.Database
 
     public class SpGetUserEventReturnModel
     {
+        public string EventDataId { get; set; }
         public string Day { get; set; }
         public string Title { get; set; }
         public string Info { get; set; }
