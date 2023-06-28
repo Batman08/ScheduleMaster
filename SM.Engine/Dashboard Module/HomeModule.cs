@@ -33,5 +33,15 @@ namespace SM.Engine.DashboardModule
         {
             return _dashboardCommandsQueries.LoadEvents(userId);
         }
+
+        public List<SpGetUserEventReturnModel> SmLoadUserEvent(SmEventItemIdDTO smEventData)
+        {
+            var loadEventData = new SmEventDataIdDTO
+            {
+                UserId = smEventData.UserId,
+                EventDataId = smEventData.EventDataId
+            };
+            return _dashboardCommandsQueries.LoadEvent(loadEventData);
+        }
     }
 }

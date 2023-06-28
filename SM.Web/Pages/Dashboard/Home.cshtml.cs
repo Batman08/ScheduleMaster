@@ -39,5 +39,11 @@ namespace SM.Web.Pages.Dashboard
             var userId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
             return new JsonResult(_homeModule.SmLoadUserEvents(userId), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+
+        public JsonResult OnPostLoadEvent([FromBody] SmEventItemIdDTO smEventData)
+        {
+            smEventData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
+            return new JsonResult(_homeModule.SmLoadUserEvent(smEventData), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
     }
 }

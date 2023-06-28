@@ -5,6 +5,7 @@ class SmEngine {
     private readonly _controller = window.location.pathname + "?handler=";
     private readonly _urlCreateEvent = this._controller + "CreateEvent";
     private readonly _urlLoadEvents = this._controller + "LoadEvents";
+    private readonly _urlLoadEvent = this._controller + "LoadEvent";
 
     private readonly _tabDays = document.querySelector('#tabDays') as HTMLUListElement;
     private readonly _tabContentDays = document.querySelector('#tabContentDays') as HTMLDivElement;
@@ -17,7 +18,7 @@ class SmEngine {
     private _currentDay: string = 'Monday';
 
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
-    //private readonly _modalEditEvent= Utilities.BTSP_GetModal('modalEditEvent');
+    private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
 
     private Init(): void {
         this.Init_EventModals();
@@ -207,6 +208,7 @@ class SmEngine {
             endTimeEl.style.color = textColour;
 
             //add onclick event
+            _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, eventData.EventDataId);
 
             const dayPaneListGroupEl = document.querySelector(`#${eventData.Day}ListGroupEl`);
             dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
@@ -221,6 +223,45 @@ class SmEngine {
             noEventsPanel.id = noEventsPanel.id + day;
             dayPaneListGroupEl.appendChild(noEventsPanel);
         });
+    }
+
+    private LoadFromServer_UserEvent(ev: MouseEvent, eventDataId: string): void {
+        const verficationToken = (document.getElementsByName('__RequestVerificationToken')[0] as HTMLInputElement).value;
+
+        const dataToServer = {
+            EventDataId: eventDataId
+        };
+
+        const xhr = new XMLHttpRequest() as XMLHttpRequest;
+        xhr.open('POST', this._urlLoadEvent);
+        xhr.setRequestHeader("XSRF-TOKEN", verficationToken);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_UserEvent(JSON.parse(xhr.response)[0]) : console.log(xhr, "Failed on LoadFromServer_UserEvent");
+        Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
+    }
+
+    private LoadFromServerDone_UserEvent(eventReturnData: SmEventReturnDataDTO): void {
+        const formUpdateEvent = document.querySelector('#formUpdateEvent') as HTMLFormElement;
+        formUpdateEvent.reset();
+
+        for (var dataKey in eventReturnData) {
+            if (dataKey === "Day" || dataKey === "EventDataId") continue;
+
+            const formEl = formUpdateEvent.querySelector(`[name=Event${dataKey}]`) as HTMLElement;
+            switch (formEl.nodeName) {
+                case "INPUT":
+                    const inputEle = formEl as HTMLInputElement;
+                    inputEle.value = eventReturnData[dataKey];
+                    break;
+
+                case "TEXTAREA":
+                    const textareaEle = formEl as HTMLTextAreaElement;
+                    textareaEle.value = eventReturnData[dataKey];;
+                    break;
+            }
+        }
+
+        this._modalEditEvent.show();
     }
     //#endregion
 }

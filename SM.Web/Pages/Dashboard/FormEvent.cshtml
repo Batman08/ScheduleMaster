@@ -1,0 +1,129 @@
+﻿@*Create Event Form*@
+<div class="modal fade" id="modalCreateEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white fws-bold" ><i class="fa-regular fa-calendar-plus fw-bold"></i> Create Event</h5>
+            </div>
+            <div class="modal-body">
+                <div id="divCreateEventModalLoadingPanel" class="pt-4 pb-5" style="display: none;">
+                    <div class="text-center" style="color: lightgrey;">
+                        <div class="display-2">
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                        </div>
+                        <div class="fw-bold fs-4">Loading Event...</div>
+                    </div>
+                </div>
+                <form id="formCreateEvent" method="post">
+                    <div class="p-3 pb-3 SM-tile" style="background: #f3f3f3; box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1);">
+                        <!-- Title Field -->
+                        <div class="mb-3">
+                            <label for="EventTitle" class="form-label fw-bold">Title:</label>
+                            <input type="text" id="EventTitle" name="EventTitle" class="form-control" placeholder="Event Title" aria-label="Event Title" aria-describedby="basic-addon1" maxlength="50" required>
+                        </div>
+
+
+                        <!-- Info Field -->
+                        <div class="mb-3">
+                            <label for="EventInfo" class="form-label fw-bold">Info:</label>
+                            <textarea id="EventInfo" name="EventInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
+                        </div>
+
+                        <!-- Start & End-->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="EventStart" class="form-label fw-bold">Start:</label>
+                                <input type="time" class="form-control" id="EventStart" name="EventStart">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="EventEnd" class="form-label fw-bold">End:</label>
+                                <input type="time" class="form-control" id="EventEnd" name="EventEnd">
+                            </div>
+                        </div>
+
+                        <!-- Colour Field -->
+                        <div class="mb-3">
+                            <label for="EventColour" class="form-label fw-bold">Colour:</label>
+                            <input type="color" class="form-control form-control-color w-100" id="EventColour" name="EventColour" value="#563d7c" title="Choose your color">
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div style="float: right; padding-right: 15px;">
+                        <span style="padding-right: 5px;">
+                            <button type="button" class="btn btn-secondary btn-shadow" data-bs-dismiss="modal"><i class="fas fa-ban fa-fw"></i> Cancel</button>
+                        </span>
+                        <button type="submit" class="btn btn-primary btn-shadow btn-block"><i class="fas fa-save"></i> Save</button>
+                    </div>
+                    <input type="hidden" id="hiddenData">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+   
+@*Edit Event Form*@
+<div class="modal fade" id="modalEditEvent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title text-white fws-bold"><i class="fa-solid fa-pen-to-square"></i> Update Event</h5>
+            </div>
+            <div class="modal-body">
+                <div id="divCreateEventModalLoadingPanel" class="pt-4 pb-5" style="display: none;">
+                    <div class="text-center" style="color: lightgrey;">
+                        <div class="display-2">
+                            <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                        </div>
+                        <div class="fw-bold fs-4">Loading Event...</div>
+                    </div>
+                </div>
+                <form id="formUpdateEvent" method="post">
+                    <div class="p-3 pb-3 SM-tile" style="background: #f3f3f3; box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.1);">
+                        <!-- Title Field -->
+                        <div class="mb-3">
+                            <label for="UpdateEventTitle" class="form-label fw-bold">Title:</label>
+                            <input type="text" id="UpdateEventTitle" name="EventTitle" class="form-control" placeholder="Event Title" aria-label="Event Title" aria-describedby="basic-addon1" maxlength="50" required>
+                        </div>
+
+
+                        <!-- Info Field -->
+                        <div class="mb-3">
+                            <label for="UpdateEventInfo" class="form-label fw-bold">Info:</label>
+                            <textarea id="UpdateEventInfo" name="EventInfo" class="form-control" rows="3" maxlength="256" placeholder="Event Info" aria-label="Event Info" required></textarea>
+                        </div>
+
+                        <!-- Start & End-->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="UpdateEventStart" class="form-label fw-bold">Start:</label>
+                                <input type="time" class="form-control" id="UpdateEventStart" name="EventStart">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="UpdateEventEnd" class="form-label fw-bold">End:</label>
+                                <input type="time" class="form-control" id="UpdateEventEnd" name="EventEnd">
+                            </div>
+                        </div>
+
+                        <!-- Colour Field -->
+                        <div class="mb-3">
+                            <label for="UpdateEventColour" class="form-label fw-bold">Colour:</label>
+                            <input type="color" class="form-control form-control-color w-100" id="UpdateEventColour" name="EventColour" value="#563d7c" title="Choose your color">
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div style="float: right; padding-right: 15px;">
+                        <span style="padding-right: 5px;">
+                            <button type="button" class="btn btn-secondary btn-shadow" data-bs-dismiss="modal"><i class="fas fa-ban fa-fw"></i> Cancel</button>
+                        </span>
+                        <button type="submit" class="btn btn-warning btn-shadow btn-block"><i class="fas fa-save"></i> Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,4 +10,10 @@
         public string End { get; set; } = "";
         public string Colour { get; set; } = "";
     }
+
+    public class SmEventItemIdDTO
+    {
+        public Guid UserId { get; set; } = Guid.Empty;
+        public Guid EventDataId { get; set; } = Guid.Empty;
+    }
 }

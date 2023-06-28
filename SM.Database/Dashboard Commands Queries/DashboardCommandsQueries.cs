@@ -20,5 +20,10 @@ namespace SM.Database.DashboardCommandsQueries
         {
             return _smRepository.spLoadUserEvents(userId.ToString());
         }
+
+        public List<SpGetUserEventReturnModel> LoadEvent(SmEventDataIdDTO smEventData)
+        {
+            return _smRepository.spLoadUserEvent(smEventData);
+        }
     }
 }

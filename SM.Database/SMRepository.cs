@@ -6,6 +6,7 @@ namespace SM.Database
     {
         public void spSaveUserEvent(SmEventDataDTO smData);
         public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId);
+        public List<SpGetUserEventReturnModel> spLoadUserEvent(SmEventDataIdDTO smEventData);
     }
 
     public class SMRepository : ISmRepository
@@ -25,6 +26,11 @@ namespace SM.Database
         public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId)
         {
             return _smContext.SpGetUserEvents(UserId).ToList();
+        }
+
+        public List<SpGetUserEventReturnModel> spLoadUserEvent(SmEventDataIdDTO smEventData)
+        {
+            return _smContext.SpGetUserEvent(smEventData.EventDataId.ToString(), smEventData.UserId.ToString()).ToList();
         }
     }
 }
