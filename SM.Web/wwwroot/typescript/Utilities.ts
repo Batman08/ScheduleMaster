@@ -1,11 +1,16 @@
-﻿class Utilities {
-    public static Sm_XMLHttpRequest(xhr:XMLHttpRequest, body: any): void {
-        xhr.onloadend = () => console.log("Hide Load Icon");
-        xhr.onerror = () => console.log("Hide Load Icon");
-        xhr.onabort= () => console.log("Hide Load Icon");
-        xhr.ontimeout = () => console.log("Hide Load Icon");
+﻿//import * as $ from "bootstrap";
+class Utilities {
+    public static Sm_XMLHttpRequest(xhr: XMLHttpRequest, body: any): void {
+        xhr.onloadstart = (ev: ProgressEvent) => this.AjaxLoadingIconShow();
+        xhr.onloadend = (ev: ProgressEvent) => this.AjaxLoadingIconHide();
+        xhr.onerror = (ev: ProgressEvent) => this.AjaxLoadingIconHide();
+        xhr.onabort = (ev: ProgressEvent) => this.AjaxLoadingIconHide();
+        xhr.ontimeout = (ev: ProgressEvent) => this.AjaxLoadingIconHide();
         xhr.send(JSON.stringify(body));
     }
+
+    private static AjaxLoadingIconShow = () => $('#sm-loading').fadeIn('slow');
+    private static AjaxLoadingIconHide = () => $('#sm-loading').fadeOut('slow');
 
     public static GetTextColourContrast(hexcolor) {
         var r = parseInt(hexcolor.substring(1, 3), 16);
@@ -63,7 +68,7 @@
         loadingPanel.style.display = 'none';
         mainPanel.style.display = 'block';
     }
-    
+
     /*  Bootstrap Modals  */
 
     public static BTSP_GetModal(selector: string): bootstrap.Modal {

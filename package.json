@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@types/bootstrap": "^5.2.6"
+    "@types/bootstrap": "^5.2.6",
+    "@types/jquery": "^3.5.16"
   }
 }
