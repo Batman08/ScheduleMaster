@@ -16,14 +16,20 @@ class SmEngine {
     private readonly _dayListGroupItemEl = document.querySelector('#listGroupItemEl') as HTMLDivElement;
 
     private _days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    private _currentDay: string = 'Monday';
+    private _currentDay: string = this._days[0];
 
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
-    
+
     private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
     private readonly _formEditEventPanelId = 'divEditEventModalFormPanel';
     private readonly _formEditEventLoadingPanelId = "divEditEventModalLoadingPanel";
 
+
+    //#region Init
+    public static Init(): void {
+        const smEngine = new SmEngine();
+        smEngine.Init();
+    }
 
     private Init(): void {
         this.Init_EventModals();
@@ -33,11 +39,17 @@ class SmEngine {
         this.BindSubmit_CreateEvent();
     }
 
-    public static Init(): void {
-        const smEngine = new SmEngine();
-        smEngine.Init();
+    private Init_EventModals(): void {
+        const btnCreateEvent = document.querySelector('#btnCreateEvent') as HTMLButtonElement;
+        btnCreateEvent.onclick = () => {
+            //clear form
+            (document.querySelector('#formCreateEvent') as HTMLFormElement).reset();
+            this._modalCreateEvent.show();
+        }
     }
+    //#endregion
 
+    //#region Helper Functions
     private GetCurrentTabDay(): void {
         this._tabDays.querySelectorAll('button[data-bs-toggle="tab"]').forEach(tabBtn => {
             tabBtn.addEventListener('shown.bs.tab', event => {
@@ -52,17 +64,6 @@ class SmEngine {
         return this._days.indexOf(selectedDay) >= 0;
     }
 
-    private Init_EventModals(): void {
-        const btnCreateEvent = document.querySelector('#btnCreateEvent') as HTMLButtonElement;
-        btnCreateEvent.onclick = () => {
-            //clear form
-            (document.querySelector('#formCreateEvent') as HTMLFormElement).reset();
-            this._modalCreateEvent.show();
-        }
-    }
-
-
-    //#region Create
     private Display_DayTabs(): void {
         this._tabDays.innerHTML = "";
         this._tabContentDays.innerHTML = "";
@@ -232,7 +233,7 @@ class SmEngine {
     private LoadFromServer_UserEvent(ev: MouseEvent, eventDataId: string): void {
         Utilities.ShowPanel(this._formEditEventPanelId, this._formEditEventLoadingPanelId);
         this._modalEditEvent.show();
-        
+
         const verficationToken = (document.getElementsByName('__RequestVerificationToken')[0] as HTMLInputElement).value;
 
         const dataToServer = {
@@ -281,7 +282,7 @@ class SmEngine {
     //#endregion
 
     //#region Update
-    private HandleSubmit_UpdateEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl:HTMLElement): void {
+    private HandleSubmit_UpdateEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl: HTMLElement): void {
         ev.preventDefault();
 
         if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
@@ -325,7 +326,7 @@ class SmEngine {
 
         const endTime = eventEl.querySelector('#EndTime') as HTMLHeadElement;
         endTime.textContent = eventReturnData.End;
-        
+
         this._modalEditEvent.hide();
         form.reset();
     }
