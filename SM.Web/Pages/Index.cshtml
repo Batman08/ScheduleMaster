@@ -1,10 +1,25 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Schedule Master";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*<div class="text-center"></div>*@
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="sm-box">
+            <div style="width:40%">
+                <a type="button" class="btn btn-primary float-end" asp-area="Auth" asp-page="/Account/Register">Sign Up</a>
+            </div>
+            <div style="width:20%">
+                <div class="sm-vertical-line">or</div>
+            </div>
+            <div style="width:40%">
+                <a type="button" class="btn btn-outline-secondary" asp-area="Auth" asp-page="/Account/Login">Log In</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<partial name="LoadingScreenOverlay.cshtml" />

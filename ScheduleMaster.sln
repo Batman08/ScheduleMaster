@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3. SM.Database", "SM.Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4. SM.Common", "SM.Common\4. SM.Common.csproj", "{E2B6AFE3-5B3C-4C3B-A33E-CC8A4507E33C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1. SM.Web", "SM.Web\1. SM.Web.csproj", "{EB4724D2-4B40-4C66-AD29-91E06D178FE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1. SM.Web", "SM.Web\1. SM.Web.csproj", "{EB4724D2-4B40-4C66-AD29-91E06D178FE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
