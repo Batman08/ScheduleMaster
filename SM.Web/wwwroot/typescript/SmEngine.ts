@@ -5,6 +5,7 @@ class SmEngine {
     private readonly _controller = window.location.pathname + "?handler=";
     private readonly _urlCreateEvent = this._controller + "CreateEvent";
     private readonly _urlUpdateEvent = this._controller + "UpdateEvent";
+    private readonly _urlDeleteEvent = this._controller + "DeleteEvent";
     private readonly _urlLoadEvents = this._controller + "LoadEvents";
     private readonly _urlLoadEvent = this._controller + "LoadEvent";
 
@@ -251,6 +252,10 @@ class SmEngine {
     private LoadFromServerDone_UserEvent(ev: MouseEvent, eventReturnData: SmEventReturnDataDTO): void {
         const formUpdateEvent = document.querySelector('#formUpdateEvent') as HTMLFormElement;
         formUpdateEvent.reset();
+        formUpdateEvent.onsubmit = null;
+
+        const formDeleteEvent = document.querySelector('#formDeleteEvent') as HTMLFormElement;
+        formDeleteEvent.onsubmit = null;
 
         for (var dataKey in eventReturnData) {
             if (dataKey === "Day" || dataKey === "EventDataId") continue;
@@ -276,7 +281,8 @@ class SmEngine {
 
         const targetEventEl = (ev.target as HTMLElement).closest('.list-group-item') as HTMLElement;
         formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
-
+        formDeleteEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_DeleteEvent(ev, formDeleteEvent, eventDataFromServer, targetEventEl);
+        
         Utilities.ShowPanel(this._formEditEventLoadingPanelId, this._formEditEventPanelId);
     }
     //#endregion
@@ -329,6 +335,36 @@ class SmEngine {
 
         this._modalEditEvent.hide();
         form.reset();
+    }
+    //#endregion
+
+    //#region Update
+    private HandleSubmit_DeleteEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl: HTMLElement): void {
+        ev.preventDefault();
+
+        if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
+            alert("error selected day does not exist");
+        };
+
+        const dataToServer: SmEventDataIdDTO = {
+            EventDataId: eventDataFromServer.EventDataId,
+        };
+
+        const verficationToken = (document.getElementsByName('__RequestVerificationToken')[0] as HTMLInputElement).value;
+
+        const xhr = new XMLHttpRequest() as XMLHttpRequest;
+        xhr.open('POST', this._urlDeleteEvent);
+        xhr.setRequestHeader("XSRF-TOKEN", verficationToken);
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onload = () => xhr.status === 200 ? this.HandleSubmitDone_DeleteEvent(JSON.parse(xhr.response), form, eventEl) : console.log(xhr, "Failed on HandleSubmit_UpdateEvent");
+        Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
+    }
+
+    private HandleSubmitDone_DeleteEvent(statusMessage: SmStatusMessage, form: HTMLFormElement, eventEl: HTMLElement): void {
+        this._modalEditEvent.hide();
+        eventEl.remove();
+        alert(statusMessage);
+        //dispaly info modal passing messagae param
     }
     //#endregion
 }

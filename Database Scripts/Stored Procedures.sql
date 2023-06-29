@@ -71,3 +71,28 @@ BEGIN
 	WHERE EventDataId=@p_EventDataId AND UserId=@p_UserId;
 END;
 GO
+
+
+
+-- [spDeleteUserEvent]
+-- This will delete an existing event
+-------------------------------------
+DROP PROCEDURE IF EXISTS [dbo].[spDeleteUserEvent];  
+GO  
+CREATE PROC [dbo].[spDeleteUserEvent] @p_EventDataId NVARCHAR(450), @p_UserId NVARCHAR(256)  
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+	DELETE FROM [EventData]
+	WHERE EventDataId=@p_EventDataId AND UserId=@p_UserId;
+
+	DECLARE @message NVARCHAR(256);
+	IF @@ROWCOUNT=0
+		SET @message='An error occurred, please try again later.';
+	ELSE
+		SET @message='Successfully Deleted Event';
+
+	SELECT @message AS [Message];
+END;
+GO

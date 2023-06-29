@@ -21,6 +21,11 @@ namespace SM.Database.DashboardCommandsQueries
             _smRepository.SpUpdateUserEvent(smUpdateData);
         }
 
+        public List<SpDeleteUserEventReturnModel> DeleteEvent(SmEventDataIdDTO smData)
+        {
+            return _smRepository.SpDeleteUserEvent(smData);
+        }
+
         public List<SpGetUserEventsReturnModel> LoadEvents(Guid userId)
         {
             return _smRepository.SpLoadUserEvents(userId.ToString());

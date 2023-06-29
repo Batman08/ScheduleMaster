@@ -41,6 +41,14 @@ namespace SM.Web.Pages.Dashboard
             return new JsonResult(smEventData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
+        public JsonResult OnPostDeleteEvent([FromBody] SmEventItemIdDTO smEventData)
+        {
+            smEventData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
+
+            var message = _homeModule.SmDeleteUserEvent(smEventData);
+            return new JsonResult(message, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
         public JsonResult OnPostLoadEvents()
         {
             var userId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());

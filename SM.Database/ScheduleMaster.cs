@@ -84,6 +84,10 @@ namespace SM.Database
         IQueryable<TResult> FromExpression<TResult> (Expression<Func<IQueryable<TResult>>> expression);
 
         // Stored Procedures
+        List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId);
+        List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId, out int procResult);
+        Task<List<SpDeleteUserEventReturnModel>> SpDeleteUserEventAsync(string pEventDataId, string pUserId);
+
         List<SpGetUserEventReturnModel> SpGetUserEvent(string pEventDataId, string pUserId);
         List<SpGetUserEventReturnModel> SpGetUserEvent(string pEventDataId, string pUserId, out int procResult);
         Task<List<SpGetUserEventReturnModel>> SpGetUserEventAsync(string pEventDataId, string pUserId);
@@ -144,12 +148,57 @@ namespace SM.Database
 
             modelBuilder.ApplyConfiguration(new EventDataConfiguration());
 
+            modelBuilder.Entity<SpDeleteUserEventReturnModel>().HasNoKey();
             modelBuilder.Entity<SpGetUserEventReturnModel>().HasNoKey();
             modelBuilder.Entity<SpGetUserEventsReturnModel>().HasNoKey();
         }
 
 
         // Stored Procedures
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId)
+        {
+            int procResult;
+            return SpDeleteUserEvent(pEventDataId, pUserId, out procResult);
+        }
+
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId, out int procResult)
+        {
+            var pEventDataIdParam = new SqlParameter { ParameterName = "@p_EventDataId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pEventDataId, Size = 450 };
+            if (pEventDataIdParam.Value == null)
+                pEventDataIdParam.Value = DBNull.Value;
+
+            var pUserIdParam = new SqlParameter { ParameterName = "@p_UserId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pUserId, Size = 256 };
+            if (pUserIdParam.Value == null)
+                pUserIdParam.Value = DBNull.Value;
+
+            var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+            const string sqlCommand = "EXEC @procResult = [dbo].[spDeleteUserEvent] @p_EventDataId, @p_UserId";
+            var procResultData = Set<SpDeleteUserEventReturnModel>()
+                .FromSqlRaw(sqlCommand, pEventDataIdParam, pUserIdParam, procResultParam)
+                .ToList();
+
+            procResult = (int) procResultParam.Value;
+            return procResultData;
+        }
+
+        public async Task<List<SpDeleteUserEventReturnModel>> SpDeleteUserEventAsync(string pEventDataId, string pUserId)
+        {
+            var pEventDataIdParam = new SqlParameter { ParameterName = "@p_EventDataId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pEventDataId, Size = 450 };
+            if (pEventDataIdParam.Value == null)
+                pEventDataIdParam.Value = DBNull.Value;
+
+            var pUserIdParam = new SqlParameter { ParameterName = "@p_UserId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pUserId, Size = 256 };
+            if (pUserIdParam.Value == null)
+                pUserIdParam.Value = DBNull.Value;
+
+            const string sqlCommand = "EXEC [dbo].[spDeleteUserEvent] @p_EventDataId, @p_UserId";
+            var procResultData = await Set<SpDeleteUserEventReturnModel>()
+                .FromSqlRaw(sqlCommand, pEventDataIdParam, pUserIdParam)
+                .ToListAsync();
+
+            return procResultData;
+        }
+
         public List<SpGetUserEventReturnModel> SpGetUserEvent(string pEventDataId, string pUserId)
         {
             int procResult;
@@ -545,6 +594,25 @@ namespace SM.Database
 
 
         // Stored Procedures
+
+        public DbSet<SpDeleteUserEventReturnModel> SpDeleteUserEventReturnModel { get; set; }
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId)
+        {
+            int procResult;
+            return SpDeleteUserEvent(pEventDataId, pUserId, out procResult);
+        }
+
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(string pEventDataId, string pUserId, out int procResult)
+        {
+            procResult = 0;
+            return new List<SpDeleteUserEventReturnModel>();
+        }
+
+        public Task<List<SpDeleteUserEventReturnModel>> SpDeleteUserEventAsync(string pEventDataId, string pUserId)
+        {
+            int procResult;
+            return Task.FromResult(SpDeleteUserEvent(pEventDataId, pUserId, out procResult));
+        }
 
         public DbSet<SpGetUserEventReturnModel> SpGetUserEventReturnModel { get; set; }
         public List<SpGetUserEventReturnModel> SpGetUserEvent(string pEventDataId, string pUserId)
@@ -1128,6 +1196,11 @@ namespace SM.Database
     // ****************************************************************************************************
     // This is not a commercial licence, therefore only a few tables/views/stored procedures are generated.
     // ****************************************************************************************************
+
+    public class SpDeleteUserEventReturnModel
+    {
+        public string Message { get; set; }
+    }
 
     public class SpGetUserEventReturnModel
     {

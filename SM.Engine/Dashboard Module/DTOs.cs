@@ -29,4 +29,9 @@
         public string End { get; set; } = "";
         public string Colour { get; set; } = "";
     }
+
+    //public class SmMessageItemDTO
+    //{
+    //    public string Message { get; set; } = "";
+    //}
 }

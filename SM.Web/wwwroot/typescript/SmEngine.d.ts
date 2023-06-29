@@ -31,3 +31,11 @@ type SmEventReturnDataDTO = {
     End: string;
     Colour: string;
 }
+
+type SmEventDataIdDTO = {
+    EventDataId: string;
+}
+
+type SmStatusMessage = {
+    Message: string;
+}

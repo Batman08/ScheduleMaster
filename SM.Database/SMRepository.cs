@@ -6,6 +6,7 @@ namespace SM.Database
     {
         public void SpSaveUserEvent(SmEventDataDTO smData);
         public void SpUpdateUserEvent(SmEventDataUpdateDTO smUpdateData);
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(SmEventDataIdDTO smData);
         public List<SpGetUserEventsReturnModel> SpLoadUserEvents(string UserId);
         public List<SpGetUserEventReturnModel> SpLoadUserEvent(SmEventDataIdDTO smEventData);
     }
@@ -27,6 +28,11 @@ namespace SM.Database
         public void SpUpdateUserEvent(SmEventDataUpdateDTO smUpdateData)
         {
             _smContext.SpUpdateUserEvent(smUpdateData.EventDataId.ToString(), smUpdateData.UserId.ToString(), smUpdateData.Day, smUpdateData.Title, smUpdateData.Info, smUpdateData.Start, smUpdateData.End, smUpdateData.Colour);
+        }
+
+        public List<SpDeleteUserEventReturnModel> SpDeleteUserEvent(SmEventDataIdDTO smData)
+        {
+            return _smContext.SpDeleteUserEvent(smData.EventDataId.ToString(), smData.UserId.ToString());
         }
 
         public List<SpGetUserEventsReturnModel> SpLoadUserEvents(string UserId)

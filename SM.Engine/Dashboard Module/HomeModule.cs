@@ -46,6 +46,16 @@ namespace SM.Engine.DashboardModule
             _dashboardCommandsQueries.UpdateEvent(dataToSave);
         }
 
+        public string SmDeleteUserEvent(SmEventItemIdDTO smData)
+        {
+            var dataToSave = new SmEventDataIdDTO
+            {
+                UserId = smData.UserId,
+                EventDataId = smData.EventDataId,
+            };
+            return _dashboardCommandsQueries.DeleteEvent(dataToSave).First().Message;
+        }
+
         public List<SpGetUserEventsReturnModel> SmLoadUserEvents(Guid userId)
         {
             return _dashboardCommandsQueries.LoadEvents(userId);
