@@ -45,12 +45,11 @@ GO
 --------------------------------------------
 DROP PROCEDURE IF EXISTS [dbo].[spSaveUserEvent];  
 GO  
-CREATE PROC [dbo].[spSaveUserEvent] @p_UserId NVARCHAR(256), @p_Day NVARCHAR(25), @p_Title NVARCHAR(256), @p_Info NVARCHAR(256), @p_Start NVARCHAR(256), @p_End NVARCHAR(256), @p_Colour NVARCHAR(256)
+CREATE PROC [dbo].[spSaveUserEvent] @p_EventDataId NVARCHAR(256), @p_UserId NVARCHAR(256), @p_Day NVARCHAR(25), @p_Title NVARCHAR(256), @p_Info NVARCHAR(256), @p_Start NVARCHAR(256), @p_End NVARCHAR(256), @p_Colour NVARCHAR(256)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-	DECLARE @p_EventDataId NVARCHAR(256) = (SELECT NEWID());
 	INSERT INTO [EventData] VALUES(@p_EventDataId, @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour);
 END;
 GO

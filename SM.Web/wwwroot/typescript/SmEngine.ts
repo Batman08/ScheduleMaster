@@ -156,7 +156,7 @@ class SmEngine {
         infoEl.textContent = eventReturnData.Info;
         infoEl.style.color = textColour;
 
-        //todo: add onclick event
+        _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, eventReturnData.EventDataId);
 
         dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
 
@@ -212,7 +212,6 @@ class SmEngine {
             endTimeEl.textContent = eventData.End;
             endTimeEl.style.color = textColour;
 
-            //add onclick event
             _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, eventData.EventDataId);
 
             const dayPaneListGroupEl = document.querySelector(`#${eventData.Day}ListGroupEl`);
@@ -274,7 +273,7 @@ class SmEngine {
             Day: eventReturnData.Day
         }
 
-        const targetEventEl = ev.target as HTMLElement;
+        const targetEventEl = (ev.target as HTMLElement).closest('.list-group-item') as HTMLElement;
         formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
 
         Utilities.ShowPanel(this._formEditEventLoadingPanelId, this._formEditEventPanelId);

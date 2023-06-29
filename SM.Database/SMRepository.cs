@@ -21,7 +21,7 @@ namespace SM.Database
 
         public void SpSaveUserEvent(SmEventDataDTO smData)
         {
-            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Day, smData.Title, smData.Info, smData.Start, smData.End, smData.Colour);
+            _smContext.SpSaveUserEvent(smData.EventDataId.ToString(), smData.UserId.ToString(), smData.Day, smData.Title, smData.Info, smData.Start, smData.End, smData.Colour);
         }
 
         public void SpUpdateUserEvent(SmEventDataUpdateDTO smUpdateData)

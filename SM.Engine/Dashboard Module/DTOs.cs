@@ -3,6 +3,7 @@
     public class SmEventItemDTO
     {
         public Guid UserId { get; set; } = Guid.Empty;
+        public Guid EventDataId { get; set; } = Guid.NewGuid();
         public string Day { get; set; } = "";
         public string Title { get; set; } = "";
         public string Info { get; set; } = "";

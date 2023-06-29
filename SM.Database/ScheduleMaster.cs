@@ -92,7 +92,7 @@ namespace SM.Database
         List<SpGetUserEventsReturnModel> SpGetUserEvents(string pUserId, out int procResult);
         Task<List<SpGetUserEventsReturnModel>> SpGetUserEventsAsync(string pUserId);
 
-        int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
+        int SpSaveUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
         // SpSaveUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
         int SpUpdateUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
@@ -230,8 +230,12 @@ namespace SM.Database
             return procResultData;
         }
 
-        public int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        public int SpSaveUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
         {
+            var pEventDataIdParam = new SqlParameter { ParameterName = "@p_EventDataId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pEventDataId, Size = 256 };
+            if (pEventDataIdParam.Value == null)
+                pEventDataIdParam.Value = DBNull.Value;
+
             var pUserIdParam = new SqlParameter { ParameterName = "@p_UserId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pUserId, Size = 256 };
             if (pUserIdParam.Value == null)
                 pUserIdParam.Value = DBNull.Value;
@@ -262,7 +266,7 @@ namespace SM.Database
 
             var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
 
-            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[spSaveUserEvent] @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour", pUserIdParam, pDayParam, pTitleParam, pInfoParam, pStartParam, pEndParam, pColourParam, procResultParam);
+            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[spSaveUserEvent] @p_EventDataId, @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour", pEventDataIdParam, pUserIdParam, pDayParam, pTitleParam, pInfoParam, pStartParam, pEndParam, pColourParam, procResultParam);
 
             return (int)procResultParam.Value;
         }
@@ -580,7 +584,7 @@ namespace SM.Database
             return Task.FromResult(SpGetUserEvents(pUserId, out procResult));
         }
 
-        public int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        public int SpSaveUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
         {
             return 0;
         }

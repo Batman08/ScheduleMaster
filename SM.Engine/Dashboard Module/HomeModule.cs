@@ -19,6 +19,7 @@ namespace SM.Engine.DashboardModule
             var dataToSave = new SmEventDataDTO
             {
                 UserId = smData.UserId,
+                EventDataId = smData.EventDataId,
                 Day = smData.Day,
                 Title = smData.Title,
                 Info = smData.Info,
