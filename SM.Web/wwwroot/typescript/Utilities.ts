@@ -1,5 +1,4 @@
-﻿//import * as $ from "bootstrap";
-class Utilities {
+﻿class Utilities {
     public static Sm_XMLHttpRequest(xhr: XMLHttpRequest, body: any): void {
         xhr.onloadstart = (ev: ProgressEvent) => this.AjaxLoadingIconShow();
         xhr.onloadend = (ev: ProgressEvent) => this.AjaxLoadingIconHide();
@@ -69,7 +68,8 @@ class Utilities {
         mainPanel.style.display = 'block';
     }
 
-    /*  Bootstrap Modals  */
+    
+    //#region /*  Bootstrap Modals  */
 
     public static BTSP_GetModal(selector: string): bootstrap.Modal {
         const modalElement = document.querySelector(selector) as HTMLDivElement
@@ -83,4 +83,5 @@ class Utilities {
     public static BTSP_CloseModal(modal: bootstrap.Modal): void {
         modal.hide();
     }
+    //#endregion
 }

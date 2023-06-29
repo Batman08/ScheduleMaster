@@ -311,7 +311,7 @@ class SmEngine {
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
     }
 
-    private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventReturnDataDTO, form:HTMLFormElement, eventEl:HTMLElement): void {
+    private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement, eventEl: HTMLElement): void {
         const title = eventEl.querySelector('#Title') as HTMLHeadElement;
         title.textContent = eventReturnData.Title;
 
