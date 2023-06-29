@@ -12,9 +12,14 @@ namespace SM.Web.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            //check if user is logged in redirect to user dashboard
+            if (User.Identity!.IsAuthenticated && User.Identity != null)
+            {
+                return LocalRedirect(Url.Content("~/Dashboard/Home"));
+            }
+            return Page();
         }
     }
 }
