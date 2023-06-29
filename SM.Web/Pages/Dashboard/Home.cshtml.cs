@@ -34,6 +34,13 @@ namespace SM.Web.Pages.Dashboard
             return new JsonResult(smData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
+        public JsonResult OnPostUpdateEvent([FromBody] SmEventItemUpdateDTO smEventData)
+        {
+            smEventData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
+            _homeModule.SmUpdateUserEvent(smEventData);
+            return new JsonResult(smEventData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
         public JsonResult OnPostLoadEvents()
         {
             var userId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());

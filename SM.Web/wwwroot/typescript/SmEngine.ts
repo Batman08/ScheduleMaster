@@ -237,11 +237,11 @@ class SmEngine {
         xhr.open('POST', this._urlLoadEvent);
         xhr.setRequestHeader("XSRF-TOKEN", verficationToken);
         xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_UserEvent(JSON.parse(xhr.response)[0]) : console.log(xhr, "Failed on LoadFromServer_UserEvent");
+        xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_UserEvent(ev, JSON.parse(xhr.response)[0]) : console.log(xhr, "Failed on LoadFromServer_UserEvent");
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
     }
 
-    private LoadFromServerDone_UserEvent(eventReturnData: SmEventReturnDataDTO): void {
+    private LoadFromServerDone_UserEvent(ev: MouseEvent, eventReturnData: SmEventReturnDataDTO): void {
         const formUpdateEvent = document.querySelector('#formUpdateEvent') as HTMLFormElement;
         formUpdateEvent.reset();
 
@@ -267,13 +267,14 @@ class SmEngine {
             Day: eventReturnData.Day
         }
 
-        formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer);
+        const targetEventEl = ev.target as HTMLElement;
+        formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
         this._modalEditEvent.show(); //should open modal when event is clicked and should show loading event data panel
     }
     //#endregion
 
     //#region Update
-    private HandleSubmit_UpdateEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO): void {
+    private HandleSubmit_UpdateEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl:HTMLElement): void {
         ev.preventDefault();
 
         if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
@@ -298,8 +299,28 @@ class SmEngine {
         xhr.open('POST', this._urlUpdateEvent);
         xhr.setRequestHeader("XSRF-TOKEN", verficationToken);
         xhr.setRequestHeader('Content-type', 'application/json');
-        xhr.onload = () => xhr.status === 200 ? this.LoadFromServerDone_CreateEvent(JSON.parse(xhr.response), form) : console.log(xhr, "Failed on HandleSubmit_UpdateEvent");
+        xhr.onload = () => xhr.status === 200 ? this.HandleSubmitDone_UpdateEvent(JSON.parse(xhr.response), form, eventEl) : console.log(xhr, "Failed on HandleSubmit_UpdateEvent");
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
+    }
+
+    private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventReturnDataDTO, form:HTMLFormElement, eventEl:HTMLElement): void {
+        const title = eventEl.querySelector('#Title') as HTMLHeadElement;
+        title.textContent = eventReturnData.Title;
+
+        const info = eventEl.querySelector('#Info') as HTMLParagraphElement;
+        info.textContent = eventReturnData.Info;
+
+        const backgroundColour = eventEl as HTMLElement;
+        backgroundColour.style.backgroundColor = eventReturnData.Colour;
+
+        const startTime = eventEl.querySelector('#StartTime') as HTMLHeadElement;
+        startTime.textContent = eventReturnData.Start;
+
+        const endTime = eventEl.querySelector('#EndTime') as HTMLHeadElement;
+        endTime.textContent = eventReturnData.End;
+        
+        this._modalEditEvent.hide();
+        form.reset();
     }
     //#endregion
 }

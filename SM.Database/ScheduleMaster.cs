@@ -95,6 +95,9 @@ namespace SM.Database
         int SpSaveUserEvent(string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
         // SpSaveUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
+        int SpUpdateUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour);
+        // SpUpdateUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+
     }
 
     #endregion
@@ -265,6 +268,49 @@ namespace SM.Database
         }
 
         // SpSaveUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+
+        public int SpUpdateUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        {
+            var pEventDataIdParam = new SqlParameter { ParameterName = "@p_EventDataId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pEventDataId, Size = 450 };
+            if (pEventDataIdParam.Value == null)
+                pEventDataIdParam.Value = DBNull.Value;
+
+            var pUserIdParam = new SqlParameter { ParameterName = "@p_UserId", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pUserId, Size = 256 };
+            if (pUserIdParam.Value == null)
+                pUserIdParam.Value = DBNull.Value;
+
+            var pDayParam = new SqlParameter { ParameterName = "@p_Day", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pDay, Size = 25 };
+            if (pDayParam.Value == null)
+                pDayParam.Value = DBNull.Value;
+
+            var pTitleParam = new SqlParameter { ParameterName = "@p_Title", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pTitle, Size = 256 };
+            if (pTitleParam.Value == null)
+                pTitleParam.Value = DBNull.Value;
+
+            var pInfoParam = new SqlParameter { ParameterName = "@p_Info", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pInfo, Size = 256 };
+            if (pInfoParam.Value == null)
+                pInfoParam.Value = DBNull.Value;
+
+            var pStartParam = new SqlParameter { ParameterName = "@p_Start", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pStart, Size = 256 };
+            if (pStartParam.Value == null)
+                pStartParam.Value = DBNull.Value;
+
+            var pEndParam = new SqlParameter { ParameterName = "@p_End", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pEnd, Size = 256 };
+            if (pEndParam.Value == null)
+                pEndParam.Value = DBNull.Value;
+
+            var pColourParam = new SqlParameter { ParameterName = "@p_Colour", SqlDbType = SqlDbType.NVarChar, Direction = ParameterDirection.Input, Value = pColour, Size = 256 };
+            if (pColourParam.Value == null)
+                pColourParam.Value = DBNull.Value;
+
+            var procResultParam = new SqlParameter { ParameterName = "@procResult", SqlDbType = SqlDbType.Int, Direction = ParameterDirection.Output };
+
+            Database.ExecuteSqlRaw("EXEC @procResult = [dbo].[spUpdateUserEvent] @p_EventDataId, @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour", pEventDataIdParam, pUserIdParam, pDayParam, pTitleParam, pInfoParam, pStartParam, pEndParam, pColourParam, procResultParam);
+
+            return (int)procResultParam.Value;
+        }
+
+        // SpUpdateUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
 
     }
 
@@ -540,6 +586,13 @@ namespace SM.Database
         }
 
         // SpSaveUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
+
+        public int SpUpdateUserEvent(string pEventDataId, string pUserId, string pDay, string pTitle, string pInfo, string pStart, string pEnd, string pColour)
+        {
+            return 0;
+        }
+
+        // SpUpdateUserEventAsync() cannot be created due to having out parameters, or is relying on the procedure result (int)
     }
 
     #endregion

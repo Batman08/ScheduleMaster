@@ -54,6 +54,10 @@ body {
     /*font-family: "Inter", sans-serif;*/
 }
 
+.sm-pointer {
+    cursor:pointer
+}
+
 .boxes {
     --size: 32px;
     --duration: 800ms;

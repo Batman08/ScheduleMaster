@@ -29,6 +29,22 @@ namespace SM.Engine.DashboardModule
             _dashboardCommandsQueries.SaveEvent(dataToSave);
         }
 
+        public void SmUpdateUserEvent(SmEventItemUpdateDTO smUpdateData)
+        {
+            var dataToSave = new SmEventDataUpdateDTO
+            {
+                UserId = smUpdateData.UserId,
+                EventDataId = smUpdateData.EventDataId,
+                Day = smUpdateData.Day,
+                Title = smUpdateData.Title,
+                Info = smUpdateData.Info,
+                Start = smUpdateData.Start,
+                End = smUpdateData.End,
+                Colour = smUpdateData.Colour
+            };
+            _dashboardCommandsQueries.UpdateEvent(dataToSave);
+        }
+
         public List<SpGetUserEventsReturnModel> SmLoadUserEvents(Guid userId)
         {
             return _dashboardCommandsQueries.LoadEvents(userId);

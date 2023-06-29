@@ -4,9 +4,10 @@ namespace SM.Database
 {
     public interface ISmRepository
     {
-        public void spSaveUserEvent(SmEventDataDTO smData);
-        public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId);
-        public List<SpGetUserEventReturnModel> spLoadUserEvent(SmEventDataIdDTO smEventData);
+        public void SpSaveUserEvent(SmEventDataDTO smData);
+        public void SpUpdateUserEvent(SmEventDataUpdateDTO smUpdateData);
+        public List<SpGetUserEventsReturnModel> SpLoadUserEvents(string UserId);
+        public List<SpGetUserEventReturnModel> SpLoadUserEvent(SmEventDataIdDTO smEventData);
     }
 
     public class SMRepository : ISmRepository
@@ -18,17 +19,22 @@ namespace SM.Database
             _smContext = context;
         }
 
-        public void spSaveUserEvent(SmEventDataDTO smData)
+        public void SpSaveUserEvent(SmEventDataDTO smData)
         {
-            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Day, smData.Title, smData.Title, smData.Start, smData.End, smData.Colour);
+            _smContext.SpSaveUserEvent(smData.UserId.ToString(), smData.Day, smData.Title, smData.Info, smData.Start, smData.End, smData.Colour);
         }
 
-        public List<SpGetUserEventsReturnModel> spLoadUserEvents(string UserId)
+        public void SpUpdateUserEvent(SmEventDataUpdateDTO smUpdateData)
+        {
+            _smContext.SpUpdateUserEvent(smUpdateData.EventDataId.ToString(), smUpdateData.UserId.ToString(), smUpdateData.Day, smUpdateData.Title, smUpdateData.Info, smUpdateData.Start, smUpdateData.End, smUpdateData.Colour);
+        }
+
+        public List<SpGetUserEventsReturnModel> SpLoadUserEvents(string UserId)
         {
             return _smContext.SpGetUserEvents(UserId).ToList();
         }
 
-        public List<SpGetUserEventReturnModel> spLoadUserEvent(SmEventDataIdDTO smEventData)
+        public List<SpGetUserEventReturnModel> SpLoadUserEvent(SmEventDataIdDTO smEventData)
         {
             return _smContext.SpGetUserEvent(smEventData.EventDataId.ToString(), smEventData.UserId.ToString()).ToList();
         }

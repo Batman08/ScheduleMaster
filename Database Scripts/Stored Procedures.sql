@@ -54,3 +54,21 @@ BEGIN
 	INSERT INTO [EventData] VALUES(@p_EventDataId, @p_UserId, @p_Day, @p_Title, @p_Info, @p_Start, @p_End, @p_Colour);
 END;
 GO
+
+
+
+-- [spUpdateUserEvent]
+-- This will update an existing event
+-------------------------------------
+DROP PROCEDURE IF EXISTS [dbo].[spUpdateUserEvent];  
+GO  
+CREATE PROC [dbo].[spUpdateUserEvent] @p_EventDataId NVARCHAR(450), @p_UserId NVARCHAR(256), @p_Day NVARCHAR(25), @p_Title NVARCHAR(256), @p_Info NVARCHAR(256), @p_Start NVARCHAR(256), @p_End NVARCHAR(256), @p_Colour NVARCHAR(256)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+	UPDATE [EventData]
+	SET Title=@p_Title, Info=@p_Info, [Start]=@p_Start, [End]=@p_End, Colour=@p_Colour
+	WHERE EventDataId=@p_EventDataId AND UserId=@p_UserId;
+END;
+GO

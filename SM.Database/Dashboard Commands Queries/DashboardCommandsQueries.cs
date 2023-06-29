@@ -13,17 +13,22 @@ namespace SM.Database.DashboardCommandsQueries
 
         public void SaveEvent(SmEventDataDTO smData)
         {
-            _smRepository.spSaveUserEvent(smData);
+            _smRepository.SpSaveUserEvent(smData);
+        }
+
+        public void UpdateEvent(SmEventDataUpdateDTO smUpdateData)
+        {
+            _smRepository.SpUpdateUserEvent(smUpdateData);
         }
 
         public List<SpGetUserEventsReturnModel> LoadEvents(Guid userId)
         {
-            return _smRepository.spLoadUserEvents(userId.ToString());
+            return _smRepository.SpLoadUserEvents(userId.ToString());
         }
 
         public List<SpGetUserEventReturnModel> LoadEvent(SmEventDataIdDTO smEventData)
         {
-            return _smRepository.spLoadUserEvent(smEventData);
+            return _smRepository.SpLoadUserEvent(smEventData);
         }
     }
 }
