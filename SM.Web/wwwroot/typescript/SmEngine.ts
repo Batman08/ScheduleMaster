@@ -19,7 +19,11 @@ class SmEngine {
     private _currentDay: string = 'Monday';
 
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
+    
     private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
+    private readonly _formEditEventPanelId = 'divEditEventModalFormPanel';
+    private readonly _formEditEventLoadingPanelId = "divEditEventModalLoadingPanel";
+
 
     private Init(): void {
         this.Init_EventModals();
@@ -227,6 +231,9 @@ class SmEngine {
     }
 
     private LoadFromServer_UserEvent(ev: MouseEvent, eventDataId: string): void {
+        Utilities.ShowPanel(this._formEditEventPanelId, this._formEditEventLoadingPanelId);
+        this._modalEditEvent.show();
+        
         const verficationToken = (document.getElementsByName('__RequestVerificationToken')[0] as HTMLInputElement).value;
 
         const dataToServer = {
@@ -269,7 +276,8 @@ class SmEngine {
 
         const targetEventEl = ev.target as HTMLElement;
         formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
-        this._modalEditEvent.show(); //should open modal when event is clicked and should show loading event data panel
+
+        Utilities.ShowPanel(this._formEditEventLoadingPanelId, this._formEditEventPanelId);
     }
     //#endregion
 

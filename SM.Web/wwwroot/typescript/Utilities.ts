@@ -46,6 +46,23 @@
         btnEl.classList.add("opacity-50");
     }
 
+    public static EnableBtn(btnEl: HTMLButtonElement): void {
+        btnEl.style.pointerEvents = "auto";
+        btnEl.disabled = false;
+    }
+
+    public static DisableBtn(btnEl: HTMLButtonElement): void {
+        btnEl.style.pointerEvents = "none";
+        btnEl.disabled = true;
+    }
+
+    public static ShowPanel(loadingPanelId: string, mainPanelId: string): void {
+        const loadingPanel = document.querySelector('#' + loadingPanelId) as HTMLDivElement;
+        const mainPanel = document.querySelector('#' + mainPanelId) as HTMLDivElement;
+
+        loadingPanel.style.display = 'none';
+        mainPanel.style.display = 'block';
+    }
     
     /*  Bootstrap Modals  */
 
