@@ -28,8 +28,8 @@
                         @Html.DisplayNameFor(m => m.Input.RememberMe)
                     </label>
                 </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+                <div class="text-center">
+                    <button id="login-submit" type="submit" class="btn btn-primary fw-bold" style="width:65%"><i class="fa-solid fa-right-to-bracket"></i> Log in</button>
                 </div>
             </form>
         </section>
@@ -39,3 +39,14 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const btnLoginSubmit = document.querySelector('#login-submit');
+        btnLoginSubmit.addEventListener('click', function (event) {
+            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Log in`
+            btnLoginSubmit.style.pointerEvents = "none";
+            btnLoginSubmit.classList.add("opacity-50");
+        });
+    });
+</script>
