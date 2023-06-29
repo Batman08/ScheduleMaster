@@ -41,6 +41,11 @@
         Utilities.SetCookie(cname, '', -1);
     }
 
+    public static RemoveBtnPointerEvents(btnEl: HTMLButtonElement): void {
+        btnEl.style.pointerEvents = "none";
+        btnEl.classList.add("opacity-50");
+    }
+
     
     /*  Bootstrap Modals  */
 

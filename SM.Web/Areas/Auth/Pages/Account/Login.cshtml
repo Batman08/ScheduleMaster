@@ -40,13 +40,13 @@
     <partial name="_ValidationScriptsPartial" />
 }
 
+<script src="~/js/Utilities.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function (event) {
         const btnLoginSubmit = document.querySelector('#login-submit');
         btnLoginSubmit.addEventListener('click', function (event) {
-            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Log in`
-            btnLoginSubmit.style.pointerEvents = "none";
-            btnLoginSubmit.classList.add("opacity-50");
+            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Log in`;
+            Utilities.RemoveBtnPointerEvents(btnLoginSubmit);
         });
     });
 </script>
