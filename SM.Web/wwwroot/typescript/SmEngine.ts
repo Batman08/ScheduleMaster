@@ -21,12 +21,13 @@ class SmEngine {
 
     private readonly _modalInfo = Utilities.BTSP_GetModal('#modalInfo');
     private readonly __modalInfoMsgEl = document.querySelector('#modalInfo').querySelector('#infoMsg') as HTMLLIElement;
-    
+
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
 
     private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
     private readonly _formEditEventPanelId = 'divEditEventModalFormPanel';
     private readonly _formEditEventLoadingPanelId = "divEditEventModalLoadingPanel";
+    private readonly _formEditEvDeleteWarningCollapse = Utilities.BTSP_GetCollapse('#deleteEventCollapse');
 
 
     //#region Init
@@ -44,12 +45,17 @@ class SmEngine {
     }
 
     private Init_EventModals(): void {
+        /* Modal Create Event*/
         const btnCreateEvent = document.querySelector('#btnCreateEvent') as HTMLButtonElement;
         btnCreateEvent.onclick = () => {
             //clear form
             (document.querySelector('#formCreateEvent') as HTMLFormElement).reset();
             this._modalCreateEvent.show();
         }
+
+        /* Modal Edit Event*/
+        const btnCloseEditModal = document.querySelector('#btnCloseEditModal') as HTMLButtonElement;
+        btnCloseEditModal.onclick = (ev: MouseEvent) => Utilities.BTSP_CloseCollapse(this._formEditEvDeleteWarningCollapse);
     }
     //#endregion
 
@@ -285,7 +291,7 @@ class SmEngine {
         const targetEventEl = (ev.target as HTMLElement).closest('.list-group-item') as HTMLElement;
         formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
         formDeleteEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_DeleteEvent(ev, formDeleteEvent, eventDataFromServer, targetEventEl);
-        
+
         Utilities.ShowPanel(this._formEditEventLoadingPanelId, this._formEditEventPanelId);
     }
     //#endregion
@@ -341,7 +347,7 @@ class SmEngine {
     }
     //#endregion
 
-    //#region Update
+    //#region Delete
     private HandleSubmit_DeleteEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl: HTMLElement): void {
         ev.preventDefault();
 
@@ -365,11 +371,12 @@ class SmEngine {
 
     private HandleSubmitDone_DeleteEvent(statusMessage: SmStatusMessage, form: HTMLFormElement, eventEl: HTMLElement): void {
         this._modalEditEvent.hide();
+        Utilities.BTSP_CloseCollapse(this._formEditEvDeleteWarningCollapse)
 
         this.__modalInfoMsgEl.textContent = "";
         this.__modalInfoMsgEl.textContent = statusMessage.Message;
         this._modalInfo.show();
-        
+
         eventEl.remove();
     }
     //#endregion

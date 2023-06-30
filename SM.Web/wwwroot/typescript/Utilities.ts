@@ -69,8 +69,7 @@
     }
 
     
-    //#region /*  Bootstrap Modals  */
-
+    //#region Bootstrap Modals
     public static BTSP_GetModal(selector: string): bootstrap.Modal {
         const modalElement = document.querySelector(selector) as HTMLDivElement
         return new bootstrap.Modal(modalElement);
@@ -82,6 +81,17 @@
 
     public static BTSP_CloseModal(modal: bootstrap.Modal): void {
         modal.hide();
+    }
+    //#endregion
+
+    //#region Bootstrap Collapse
+    public static BTSP_GetCollapse(selector: string): bootstrap.Collapse {
+        const collapseElement = document.querySelector(selector) as HTMLDivElement
+        return new bootstrap.Collapse(collapseElement, { toggle: false });
+    }
+    
+    public static BTSP_CloseCollapse(collapse: bootstrap.Collapse): void {
+        collapse.hide();
     }
     //#endregion
 }
