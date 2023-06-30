@@ -85,10 +85,9 @@ class SmEngine {
     }
 
     private DisplayCurrentDayErrorMessage(modal: bootstrap.Modal): void {
-        debugger
         if (!this.CurrentDayCheck(this._currentDay)) {
             Utilities.BTSP_CloseModal(modal);
-            this._modalInfoMsgEl.textContent = "An error occurred, the selected day does not exist!";
+            this._modalInfoMsgEl.textContent = "An error occurred, please try again.";
             Utilities.BTSP_OpenModal(this._modalInfo);
 
             return;
