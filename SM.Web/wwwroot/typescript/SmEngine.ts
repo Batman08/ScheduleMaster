@@ -84,14 +84,16 @@ class SmEngine {
         return this._days.indexOf(selectedDay) >= 0;
     }
 
-    private DisplayCurrentDayErrorMessage(modal: bootstrap.Modal): void {
+    private DisplayCurrentDayErrorMessage(modal: bootstrap.Modal): boolean {
         if (!this.CurrentDayCheck(this._currentDay)) {
             Utilities.BTSP_CloseModal(modal);
             this._modalInfoMsgEl.textContent = "An error occurred, please try again.";
             Utilities.BTSP_OpenModal(this._modalInfo);
 
-            return;
+            return true;
         };
+
+        return false;
     }
 
     private Display_DayTabs(): void {
@@ -146,7 +148,7 @@ class SmEngine {
         Utilities.DisableBtn(btnSubmit);
         btnSubmit.innerHTML = this._createEventBtnText.Clicked;
 
-        this.DisplayCurrentDayErrorMessage(this._modalCreateEvent);
+        if (this.DisplayCurrentDayErrorMessage(this._modalCreateEvent)) return;
 
         const formData: FormData = new FormData(form);
 
@@ -336,9 +338,7 @@ class SmEngine {
         Utilities.DisableBtn(btnSubmit);
         btnSubmit.innerHTML = this._updateEventBtnText.Clicked;
 
-        if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
-            alert("error selected day does not exist");
-        };
+        if (this.DisplayCurrentDayErrorMessage(this._modalUpdateEvent)) return;
 
         const formData: FormData = new FormData(form);
 
@@ -390,10 +390,8 @@ class SmEngine {
         const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
         Utilities.DisableBtn(btnSubmit);
         btnSubmit.innerHTML = this._deleteEventBtnText.Clicked;
-        
-        if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
-            alert("error selected day does not exist");
-        };
+
+        if (this.DisplayCurrentDayErrorMessage(this._modalUpdateEvent)) { Utilities.BTSP_CloseCollapse(this._formUpdateEvDeleteWarningCollapse); return };
 
         const dataToServer: SmEventDataIdDTO = {
             EventDataId: eventDataFromServer.EventDataId,
