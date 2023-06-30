@@ -22,7 +22,7 @@ namespace SM.Web.Pages.Dashboard
             //check if user is authorized otherwise redirect to login page
             if (!User.Identity!.IsAuthenticated || User.Identity == null)
             {
-                return LocalRedirect(Url.Content("~/Identity/Account/Login"));
+                return LocalRedirect(Url.Content("~/Auth/Account/Login"));
             }
             return Page();
         }
