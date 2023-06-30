@@ -138,6 +138,27 @@ class SmEngine {
         this._tabDays.appendChild(dayTabEl);
         this._tabContentDays.appendChild(daytabPaneEl);
     }
+
+    private SortEventsOrder(a, b) {
+        const aStart = a.querySelector('#StartTime').textContent;
+        const bStart = b.querySelector('#StartTime').textContent;
+        const aEnd = a.querySelector('#EndTime').textContent;
+        const bEnd = b.querySelector('#EndTime').textContent;
+        if (aStart === bStart) {
+            return aEnd! > bEnd! ? 1 : -1;
+        }
+        return aStart! > bStart! ? 1 : -1;
+    }
+
+    private ReorderDayEvents(dayGroupEl: HTMLElement): void {
+        const eventItems = dayGroupEl.querySelectorAll('[sm-event-item]') as NodeListOf<HTMLLIElement>;
+
+        const sortedEventItems = Array.from(eventItems);
+        sortedEventItems.sort((a, b) => this.SortEventsOrder(a, b));
+        sortedEventItems.forEach((eventItem) => {
+            eventItem.parentNode?.appendChild(eventItem);
+        });
+    }
     //#endregion
 
     //#region Save
@@ -172,14 +193,14 @@ class SmEngine {
     }
 
     private LoadFromServerDone_CreateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement): void {
-        const dayPaneListGroupEl = document.querySelector(`#${eventReturnData.Day}ListGroupEl`);
+        const dayPaneListGroupEl = document.querySelector(`#${eventReturnData.Day}ListGroupEl`) as HTMLElement;
 
         //Remove No Events Panel If Exits
         const noEventsPanel = document.querySelector(`#divNoEventsPanel${eventReturnData.Day}`) as HTMLDivElement;
         if (noEventsPanel !== null) noEventsPanel.remove();
 
         const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
-        _dayPaneListGroupItemEl.id = ``;
+        _dayPaneListGroupItemEl.removeAttribute('id');
         _dayPaneListGroupItemEl.style.backgroundColor = eventReturnData.Colour;
 
         const textColour: string = Utilities.GetTextColourContrast(eventReturnData.Colour);
@@ -191,9 +212,19 @@ class SmEngine {
         infoEl.textContent = eventReturnData.Info;
         infoEl.style.color = textColour;
 
+        const startTime = _dayPaneListGroupItemEl.querySelector('#StartTime') as HTMLHeadElement;
+        startTime.textContent = eventReturnData.Start;
+        startTime.style.color = textColour;
+
+        const endTime = _dayPaneListGroupItemEl.querySelector('#EndTime') as HTMLHeadElement;
+        endTime.textContent = eventReturnData.End;
+        endTime.style.color = textColour;
+
         _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, eventReturnData.EventDataId);
 
         dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
+
+        this.ReorderDayEvents(dayPaneListGroupEl);
 
         this._modalCreateEvent.hide();
 
@@ -363,20 +394,29 @@ class SmEngine {
     }
 
     private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement, eventEl: HTMLElement): void {
+        const textColour: string = Utilities.GetTextColourContrast(eventReturnData.Colour);
+
         const title = eventEl.querySelector('#Title') as HTMLHeadElement;
         title.textContent = eventReturnData.Title;
+        title.style.color = textColour;
 
         const info = eventEl.querySelector('#Info') as HTMLParagraphElement;
         info.textContent = eventReturnData.Info;
+        info.style.color = textColour;
 
         const backgroundColour = eventEl as HTMLElement;
         backgroundColour.style.backgroundColor = eventReturnData.Colour;
+        backgroundColour.style.color = textColour;
 
         const startTime = eventEl.querySelector('#StartTime') as HTMLHeadElement;
         startTime.textContent = eventReturnData.Start;
+        startTime.style.color = textColour;
 
         const endTime = eventEl.querySelector('#EndTime') as HTMLHeadElement;
         endTime.textContent = eventReturnData.End;
+        endTime.style.color = textColour;
+
+        this.ReorderDayEvents(eventEl.parentElement);
 
         this._modalUpdateEvent.hide();
         form.reset();
