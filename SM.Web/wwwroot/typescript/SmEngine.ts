@@ -24,14 +24,18 @@ class SmEngine {
 
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
     private readonly _formCreateEventId: string = '#formCreateEvent';
-    private readonly _createEventBtnText = { Default: `<i class="fas fa-save"></i> Save`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Save` }
 
-    private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
+    private readonly _modalUpdateEvent = Utilities.BTSP_GetModal('#modalEditEvent');
+    private readonly _formDeleteEventId: string = '#formDeleteEvent';
     private readonly _formUpdateEventId: string = '#formUpdateEvent';
-    private readonly _UpdateEventBtnText = { Default: `<i class="fas fa-save"></i> Update`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Update` }
     private readonly _formUpdateEventPanelId = 'divEditEventModalFormPanel';
     private readonly _formUpdateEventLoadingPanelId = "divEditEventModalLoadingPanel";
     private readonly _formUpdateEvDeleteWarningCollapse = Utilities.BTSP_GetCollapse('#deleteEventCollapse');
+
+    /* Submit Button Texts */
+    private readonly _createEventBtnText = { Default: `<i class="fas fa-save"></i> Save`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Save` }
+    private readonly _updateEventBtnText = { Default: `<i class="fas fa-save"></i> Update`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Update` }
+    private readonly _deleteEventBtnText = { Default: `<i class="fa-regular fa-calendar-xmark"></i> Confirm`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Confirm` }
 
 
     //#region Init
@@ -254,7 +258,7 @@ class SmEngine {
 
     private LoadFromServer_UserEvent(ev: MouseEvent, eventDataId: string): void {
         Utilities.ShowPanel(this._formUpdateEventPanelId, this._formUpdateEventLoadingPanelId);
-        this._modalEditEvent.show();
+        this._modalUpdateEvent.show();
 
         const verficationToken = (document.getElementsByName('__RequestVerificationToken')[0] as HTMLInputElement).value;
 
@@ -275,7 +279,7 @@ class SmEngine {
         formUpdateEvent.reset();
         formUpdateEvent.onsubmit = null;
 
-        const formDeleteEvent = document.querySelector('#formDeleteEvent') as HTMLFormElement;
+        const formDeleteEvent = document.querySelector(this._formDeleteEventId) as HTMLFormElement;
         formDeleteEvent.onsubmit = null;
 
         for (var dataKey in eventReturnData) {
@@ -302,7 +306,11 @@ class SmEngine {
 
         const btnUpdateSubmit = formUpdateEvent.querySelector("[type=submit]") as HTMLButtonElement;
         Utilities.EnableBtn(btnUpdateSubmit);
-        btnUpdateSubmit.innerHTML = this._UpdateEventBtnText.Default;
+        btnUpdateSubmit.innerHTML = this._updateEventBtnText.Default;
+
+        const btnDeleteSubmit = formDeleteEvent.querySelector("[type=submit]") as HTMLButtonElement;
+        Utilities.EnableBtn(btnDeleteSubmit);
+        btnDeleteSubmit.innerHTML = this._deleteEventBtnText.Default;
 
         const targetEventEl = (ev.target as HTMLElement).closest('.list-group-item') as HTMLElement;
         formUpdateEvent.onsubmit = (ev: SubmitEvent) => this.HandleSubmit_UpdateEvent(ev, formUpdateEvent, eventDataFromServer, targetEventEl);
@@ -318,7 +326,7 @@ class SmEngine {
 
         const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
         Utilities.DisableBtn(btnSubmit);
-        btnSubmit.innerHTML = this._UpdateEventBtnText.Clicked;
+        btnSubmit.innerHTML = this._updateEventBtnText.Clicked;
 
         if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
             alert("error selected day does not exist");
@@ -362,7 +370,7 @@ class SmEngine {
         const endTime = eventEl.querySelector('#EndTime') as HTMLHeadElement;
         endTime.textContent = eventReturnData.End;
 
-        this._modalEditEvent.hide();
+        this._modalUpdateEvent.hide();
         form.reset();
     }
     //#endregion
@@ -371,6 +379,10 @@ class SmEngine {
     private HandleSubmit_DeleteEvent(ev: SubmitEvent, form: HTMLFormElement, eventDataFromServer: SmUpdateEventDataFromServerDTO, eventEl: HTMLElement): void {
         ev.preventDefault();
 
+        const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
+        Utilities.DisableBtn(btnSubmit);
+        btnSubmit.innerHTML = this._deleteEventBtnText.Clicked;
+        
         if (!this.CurrentDayCheck(eventDataFromServer.Day)) {
             alert("error selected day does not exist");
         };
@@ -390,7 +402,7 @@ class SmEngine {
     }
 
     private HandleSubmitDone_DeleteEvent(statusMessage: SmStatusMessage, form: HTMLFormElement, eventEl: HTMLElement): void {
-        this._modalEditEvent.hide();
+        this._modalUpdateEvent.hide();
         Utilities.BTSP_CloseCollapse(this._formUpdateEvDeleteWarningCollapse)
 
         this.__modalInfoMsgEl.textContent = "";
