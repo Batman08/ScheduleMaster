@@ -20,7 +20,7 @@ class SmEngine {
     private _currentDay: string = this._days[0];
 
     private readonly _modalInfo = Utilities.BTSP_GetModal('#modalInfo');
-    private readonly __modalInfoMsgEl = document.querySelector('#modalInfo').querySelector('#infoMsg') as HTMLLIElement;
+    private readonly _modalInfoMsgEl = document.querySelector('#modalInfo').querySelector('#infoMsg') as HTMLLIElement;
 
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
     private readonly _formCreateEventId: string = '#formCreateEvent';
@@ -84,6 +84,17 @@ class SmEngine {
         return this._days.indexOf(selectedDay) >= 0;
     }
 
+    private DisplayCurrentDayErrorMessage(modal: bootstrap.Modal): void {
+        debugger
+        if (!this.CurrentDayCheck(this._currentDay)) {
+            Utilities.BTSP_CloseModal(modal);
+            this._modalInfoMsgEl.textContent = "An error occurred, the selected day does not exist!";
+            Utilities.BTSP_OpenModal(this._modalInfo);
+
+            return;
+        };
+    }
+
     private Display_DayTabs(): void {
         this._tabDays.innerHTML = "";
         this._tabContentDays.innerHTML = "";
@@ -136,9 +147,7 @@ class SmEngine {
         Utilities.DisableBtn(btnSubmit);
         btnSubmit.innerHTML = this._createEventBtnText.Clicked;
 
-        if (!this.CurrentDayCheck(this._currentDay)) {
-            alert("error selected day does not exist");
-        };
+        this.DisplayCurrentDayErrorMessage(this._modalCreateEvent);
 
         const formData: FormData = new FormData(form);
 
@@ -405,8 +414,8 @@ class SmEngine {
         this._modalUpdateEvent.hide();
         Utilities.BTSP_CloseCollapse(this._formUpdateEvDeleteWarningCollapse)
 
-        this.__modalInfoMsgEl.textContent = "";
-        this.__modalInfoMsgEl.textContent = statusMessage.Message;
+        this._modalInfoMsgEl.textContent = "";
+        this._modalInfoMsgEl.textContent = statusMessage.Message;
         this._modalInfo.show();
 
         eventEl.remove();
