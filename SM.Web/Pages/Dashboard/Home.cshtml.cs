@@ -46,7 +46,7 @@ namespace SM.Web.Pages.Dashboard
             smEventData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
 
             var message = _homeModule.SmDeleteUserEvent(smEventData);
-            return new JsonResult(message, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return new JsonResult(new SmMessageItemDTO { Message = message }, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public JsonResult OnPostLoadEvents()

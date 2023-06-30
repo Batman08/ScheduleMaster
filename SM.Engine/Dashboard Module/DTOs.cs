@@ -30,8 +30,8 @@
         public string Colour { get; set; } = "";
     }
 
-    //public class SmMessageItemDTO
-    //{
-    //    public string Message { get; set; } = "";
-    //}
+    public class SmMessageItemDTO
+    {
+        public string Message { get; set; } = "";
+    }
 }

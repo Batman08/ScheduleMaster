@@ -19,6 +19,9 @@ class SmEngine {
     private _days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     private _currentDay: string = this._days[0];
 
+    private readonly _modalInfo = Utilities.BTSP_GetModal('#modalInfo');
+    private readonly __modalInfoMsgEl = document.querySelector('#modalInfo').querySelector('#infoMsg') as HTMLLIElement;
+    
     private readonly _modalCreateEvent = Utilities.BTSP_GetModal('#modalCreateEvent');
 
     private readonly _modalEditEvent = Utilities.BTSP_GetModal('#modalEditEvent');
@@ -362,9 +365,12 @@ class SmEngine {
 
     private HandleSubmitDone_DeleteEvent(statusMessage: SmStatusMessage, form: HTMLFormElement, eventEl: HTMLElement): void {
         this._modalEditEvent.hide();
+
+        this.__modalInfoMsgEl.textContent = "";
+        this.__modalInfoMsgEl.textContent = statusMessage.Message;
+        this._modalInfo.show();
+        
         eventEl.remove();
-        alert(statusMessage);
-        //dispaly info modal passing messagae param
     }
     //#endregion
 }
