@@ -33,9 +33,9 @@ class SmEngine {
     private readonly _formUpdateEvDeleteWarningCollapse = Utilities.BTSP_GetCollapse('#deleteEventCollapse');
 
     /* Submit Button Texts */
-    private readonly _createEventBtnText = { Default: `<i class="fas fa-save"></i> Save`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Save` }
-    private readonly _updateEventBtnText = { Default: `<i class="fas fa-save"></i> Update`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Update` }
-    private readonly _deleteEventBtnText = { Default: `<i class="fa-regular fa-calendar-xmark"></i> Confirm`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Confirm` }
+    private readonly _createEventBtnText = { Default: `<i class="fas fa-save"></i> Save`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Saving...` }
+    private readonly _updateEventBtnText = { Default: `<i class="fas fa-save"></i> Update`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Updating...` }
+    private readonly _deleteEventBtnText = { Default: `<i class="fa-regular fa-calendar-xmark"></i> Confirm`, Clicked: `<i class="fa-solid fa-spinner fa-spin"></i> Deleting...` }
 
 
     //#region Init
