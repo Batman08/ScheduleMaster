@@ -11,7 +11,7 @@
             <h2>Create a new account.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            
+
             <div class="form-floating mb-3 shadow-sm">
                 <input asp-for="Input.Username" class="form-control" aria-required="true" placeholder="username" />
                 <label asp-for="Input.Username">Username</label>
@@ -27,7 +27,16 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary btn-shadow">Register</button>
+            <div class="mb-3">
+                Already have an account?
+                <a class="icon-link icon-link-hover" href="/Auth/Account/Login" style="text-decoration: none;">
+                    <span style="text-decoration: underline;">Log In</span>
+                    <i class="bi fa-solid fa-arrow-right" style="text-decoration: none;"></i>
+                </a>
+            </div>
+            <div class="text-center">
+                <button id="registerSubmit" type="submit" class="btn btn-primary fw-bold btn-shadow" style="width:65%"><i class="fa-solid fa-user-plus"></i> Register</button>
+            </div>
         </form>
     </div>
 </div>
