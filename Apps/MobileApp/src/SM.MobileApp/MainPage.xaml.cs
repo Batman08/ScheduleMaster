@@ -18,6 +18,14 @@
             Content = _webView;
         }
 
+        protected override bool OnBackButtonPressed()
+        {
+            if (_webView.CanGoBack) _webView.GoBack();
+            else return false;
+
+            return true;
+        }
+
         private void OnWebViewNavigated(object sender, WebNavigatedEventArgs e)
         {
             /*create mobile marker if it doesn't exist*/
