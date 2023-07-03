@@ -13,10 +13,10 @@
         <EnableDefaultCssItems>false</EnableDefaultCssItems>
 
         <!-- Display name -->
-        <ApplicationTitle>SM.MobileApp</ApplicationTitle>
+        <ApplicationTitle>Schedule Master</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.sm.mobileapp</ApplicationId>
+        <ApplicationId>com.sm.schedulemaster</ApplicationId>
         <ApplicationIdGuid>75E1EFAE-504C-4A69-865E-B1B74675DECB</ApplicationIdGuid>
 
         <!-- Versions -->
@@ -33,9 +33,9 @@
 
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#FFFFFF" />
 
-        <!-- Splash Screen -->
+		<!-- Splash Screen -->
         <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
         <!-- Images -->
