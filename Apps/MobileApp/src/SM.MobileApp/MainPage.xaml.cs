@@ -22,6 +22,9 @@ namespace SM.MobileApp
 
         private RefreshView InitRefreshView()
         {
+            ScrollView scrollView = new ScrollView();
+            scrollView.Content = _webView;
+
             RefreshView refreshView = new RefreshView();
             ICommand refreshCommand = new Command(() =>
             {
@@ -29,9 +32,7 @@ namespace SM.MobileApp
                 refreshView.IsRefreshing = false;
             });
             refreshView.Command = refreshCommand;
-
-            ScrollView scrollView = new ScrollView();
-            scrollView.Content = _webView;
+            refreshView.RefreshColor = Color.FromRgb(44, 136, 211);
             refreshView.Content = scrollView;
 
             return refreshView;
