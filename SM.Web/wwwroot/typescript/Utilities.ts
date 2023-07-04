@@ -68,7 +68,7 @@
         mainPanel.style.display = 'block';
     }
 
-    
+
     //#region Bootstrap Modals
     public static BTSP_GetModal(selector: string): bootstrap.Modal {
         const modalElement = document.querySelector(selector) as HTMLDivElement
@@ -89,9 +89,39 @@
         const collapseElement = document.querySelector(selector) as HTMLDivElement
         return new bootstrap.Collapse(collapseElement, { toggle: false });
     }
-    
+
     public static BTSP_CloseCollapse(collapse: bootstrap.Collapse): void {
         collapse.hide();
+    }
+    //#endregion
+
+    //#region Mobile App
+    private static readonly _mobileMarkerId: string = "mobile-marker";
+    private static readonly _mobileMarkerSelector: string = "#" + this._mobileMarkerId;
+    
+    private static MobileApp_FindMarker(): boolean {
+        const mobileMarker = document.querySelector(this._mobileMarkerSelector) as HTMLDivElement;
+        return mobileMarker != null;
+    }
+
+    public static MobileApp_CreateMarker(): void {
+        if (this.MobileApp_FindMarker()) return;
+
+        const divMobileMarker = document.createElement('div') as HTMLDivElement;
+        divMobileMarker.id = this._mobileMarkerId;
+        document.body.appendChild(divMobileMarker);
+    }
+
+    public static MobileApp_HideRememberMe(): void {
+        const rememberMeEl = document.querySelector('#Input_RememberMe') as HTMLInputElement;
+        rememberMeEl.checked = true;
+
+        const rememberMeLabelEl = rememberMeEl.parentElement as HTMLLabelElement;
+        rememberMeLabelEl.classList.remove('form-label');
+
+        const rememberMeParentEl = rememberMeEl.parentElement.parentElement as HTMLDivElement;
+        rememberMeParentEl.classList.remove('mb-3');
+        rememberMeParentEl.classList.add('invisible');
     }
     //#endregion
 }

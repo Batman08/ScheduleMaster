@@ -29,9 +29,18 @@
         private void OnWebViewNavigated(object sender, WebNavigatedEventArgs e)
         {
             /*create mobile marker if it doesn't exist*/
-            //_webView.Eval(Javascript_MobileApp_CreateMarker()); -- todo: create Utilities function
+            _webView.Eval(Javascript_MobileApp_CreateMarker());
+
+            if (Url_Login(e))
+            {
+                _webView.Eval(Javascript_MobileApp_HideRememberMe());
+                return;
+            }
         }
 
+        private bool Url_Login(WebNavigatedEventArgs e) => e.Url.Contains("/Auth/Account/Login");
+
         private string Javascript_MobileApp_CreateMarker() => "Utilities.MobileApp_CreateMarker();";
+        private string Javascript_MobileApp_HideRememberMe() => "Utilities.MobileApp_HideRememberMe();";
     }
 }
