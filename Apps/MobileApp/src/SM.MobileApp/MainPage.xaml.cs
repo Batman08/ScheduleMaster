@@ -17,7 +17,11 @@ namespace SM.MobileApp
         {
             _webView.Source = _url;
             _webView.Navigated += OnWebViewNavigated;
+            Content = InitRefreshView();
+        }
 
+        private RefreshView InitRefreshView()
+        {
             RefreshView refreshView = new RefreshView();
             ICommand refreshCommand = new Command(() =>
             {
@@ -30,7 +34,7 @@ namespace SM.MobileApp
             scrollView.Content = _webView;
             refreshView.Content = scrollView;
 
-            Content = refreshView;
+            return refreshView;
         }
 
         protected override bool OnBackButtonPressed()
