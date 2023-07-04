@@ -52,7 +52,8 @@
     document.addEventListener("DOMContentLoaded", function (event) {
         const btnLoginSubmit = document.querySelector('#login-submit');
         btnLoginSubmit.addEventListener('click', function (event) {
-            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Log in`;
+            if (!Utilities.BindFormValidity('account')) return;
+            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Logging in...`;
             Utilities.RemoveBtnPointerEvents(btnLoginSubmit);
         });
     });

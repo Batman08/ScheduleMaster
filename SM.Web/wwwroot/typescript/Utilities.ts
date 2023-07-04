@@ -68,6 +68,19 @@
         mainPanel.style.display = 'block';
     }
 
+    public static BindFormValidity(formId: HTMLFormElement): boolean {
+        const form = document.querySelector(`#${formId}`) as HTMLFormElement;
+
+        //loop through form elements and check if aria-required="true"
+        //if so return true otherwise false
+        for (let i = 0; i < form.elements.length; i++) {
+            const element = form.elements[i] as HTMLInputElement;
+            if (element.getAttribute('aria-required') === 'true' && element.value === '') {
+                return false;
+            }
+        }
+        return true;
+    }
 
     //#region Bootstrap Modals
     public static BTSP_GetModal(selector: string): bootstrap.Modal {
@@ -98,7 +111,7 @@
     //#region Mobile App
     private static readonly _mobileMarkerId: string = "mobile-marker";
     private static readonly _mobileMarkerSelector: string = "#" + this._mobileMarkerId;
-    
+
     private static MobileApp_FindMarker(): boolean {
         const mobileMarker = document.querySelector(this._mobileMarkerSelector) as HTMLDivElement;
         return mobileMarker != null;

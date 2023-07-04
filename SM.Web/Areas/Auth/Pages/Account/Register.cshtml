@@ -35,7 +35,7 @@
                 </a>
             </div>
             <div class="text-center">
-                <button id="registerSubmit" type="submit" class="btn btn-primary fw-bold btn-shadow" style="width:65%"><i class="fa-solid fa-user-plus"></i> Register</button>
+                <button id="registerSubmit" type="submit" class="btn btn-primary fw-bold btn-shadow" style="width:65%"><i class="fa-solid fa-user-plus"></i> Sign up</button>
             </div>
         </form>
     </div>
@@ -44,3 +44,15 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<script src="~/js/Utilities.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        const btnSignUpSubmit = document.querySelector('#registerSubmit');
+        btnSignUpSubmit.addEventListener('click', function (event) {
+            if (!Utilities.BindFormValidity('registerForm')) return;
+            btnSignUpSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Signing up...`;
+            Utilities.RemoveBtnPointerEvents(btnSignUpSubmit);
+        });
+    });
+</script>
