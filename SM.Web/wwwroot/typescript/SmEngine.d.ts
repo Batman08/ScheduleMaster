@@ -32,6 +32,11 @@ type SmEventReturnDataDTO = {
     Colour: string;
 }
 
+type SmEventFormResponseDTO = {
+    SmEventItem: SmEventReturnDataDTO;
+    Message: string | null;
+}
+
 type SmEventDataIdDTO = {
     EventDataId: string;
 }

@@ -96,6 +96,11 @@ class SmEngine {
         return false;
     }
 
+    private DisplayFormSubmitErrorMessage(message: string): void{
+        this._modalInfoMsgEl.textContent = message;
+            Utilities.BTSP_OpenModal(this._modalInfo);
+    }
+
     private Display_DayTabs(): void {
         this._tabDays.innerHTML = "";
         this._tabContentDays.innerHTML = "";
@@ -192,35 +197,44 @@ class SmEngine {
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
     }
 
-    private LoadFromServerDone_CreateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement): void {
-        const dayPaneListGroupEl = document.querySelector(`#${eventReturnData.Day}ListGroupEl`) as HTMLElement;
+    private LoadFromServerDone_CreateEvent(eventReturnData: SmEventFormResponseDTO, form: HTMLFormElement): void {
+        const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
+        if (eventReturnData.Message !== null) {
+            Utilities.EnableBtn(btnSubmit);
+            btnSubmit.innerHTML = this._createEventBtnText.Default;
+            this.DisplayFormSubmitErrorMessage(eventReturnData.Message)
+            return;
+        }
+        const smEventData = eventReturnData.SmEventItem as SmEventReturnDataDTO;
+
+        const dayPaneListGroupEl = document.querySelector(`#${smEventData.Day}ListGroupEl`) as HTMLElement;
 
         //Remove No Events Panel If Exits
-        const noEventsPanel = document.querySelector(`#divNoEventsPanel${eventReturnData.Day}`) as HTMLDivElement;
+        const noEventsPanel = document.querySelector(`#divNoEventsPanel${smEventData.Day}`) as HTMLDivElement;
         if (noEventsPanel !== null) noEventsPanel.remove();
 
         const _dayPaneListGroupItemEl = this._dayListGroupItemEl.cloneNode(true) as HTMLDivElement;
         _dayPaneListGroupItemEl.removeAttribute('id');
-        _dayPaneListGroupItemEl.style.backgroundColor = eventReturnData.Colour;
+        _dayPaneListGroupItemEl.style.backgroundColor = smEventData.Colour;
 
-        const textColour: string = Utilities.GetTextColourContrast(eventReturnData.Colour);
+        const textColour: string = Utilities.GetTextColourContrast(smEventData.Colour);
         const titleEl = _dayPaneListGroupItemEl.querySelector("#Title") as HTMLHeadElement;
-        titleEl.textContent = eventReturnData.Title;
+        titleEl.textContent = smEventData.Title;
         titleEl.style.color = textColour;
 
         const infoEl = _dayPaneListGroupItemEl.querySelector("#Info") as HTMLParagraphElement;
-        infoEl.textContent = eventReturnData.Info;
+        infoEl.textContent = smEventData.Info;
         infoEl.style.color = textColour;
 
         const startTime = _dayPaneListGroupItemEl.querySelector('#StartTime') as HTMLHeadElement;
-        startTime.textContent = eventReturnData.Start;
+        startTime.textContent = smEventData.Start;
         startTime.style.color = textColour;
 
         const endTime = _dayPaneListGroupItemEl.querySelector('#EndTime') as HTMLHeadElement;
-        endTime.textContent = eventReturnData.End;
+        endTime.textContent = smEventData.End;
         endTime.style.color = textColour;
 
-        _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, eventReturnData.EventDataId);
+        _dayPaneListGroupItemEl.onclick = (ev: MouseEvent) => this.LoadFromServer_UserEvent(ev, smEventData.EventDataId);
 
         dayPaneListGroupEl.appendChild(_dayPaneListGroupItemEl);
 
@@ -230,7 +244,6 @@ class SmEngine {
 
         //clear form
         form.reset();
-        const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
         btnSubmit.innerHTML = this._createEventBtnText.Default;
     }
 

@@ -14,7 +14,24 @@ namespace SM.Engine.DashboardModule
             _dashboardCommandsQueries = new DashboardCommandsQueries(_smRepository);
         }
 
-        public void SmSaveUserEvent(SmEventItemDTO smData)
+        //create function that checks all properties of object <T> has a value except info
+        private bool SmCheckDataIsValid<T>(T data)
+        {
+            var properties = data!.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                if (property.Name != "Info")
+                {
+                    if (property.GetValue(data) == null || string.IsNullOrEmpty(property.GetValue(data)!.ToString()))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public SmEventFormResponseDTO SmSaveUserEvent(SmEventItemDTO smData)
         {
             var dataToSave = new SmEventDataDTO
             {
@@ -27,7 +44,29 @@ namespace SM.Engine.DashboardModule
                 End = smData.End,
                 Colour = smData.Colour
             };
-            _dashboardCommandsQueries.SaveEvent(dataToSave);
+
+            //create object SmEventFormResponseDTO copying values of SmEventItemDTO
+            var smEventFormResponseDTO = new SmEventFormResponseDTO
+            {
+                SmEventItem = new SmEventItemResponseDTO
+                {
+                    EventDataId = smData.EventDataId,
+                    Day = smData.Day,
+                    Title = smData.Title,
+                    Info = smData.Info,
+                    Start = smData.Start,
+                    End = smData.End,
+                    Colour = smData.Colour
+                }
+            };
+
+
+            if (SmCheckDataIsValid(smData))
+                _dashboardCommandsQueries.SaveEvent(dataToSave);
+            else
+                smEventFormResponseDTO.Message = "An error occured. One or more required fields were not filled out!";
+
+            return smEventFormResponseDTO;
         }
 
         public void SmUpdateUserEvent(SmEventItemUpdateDTO smUpdateData)
