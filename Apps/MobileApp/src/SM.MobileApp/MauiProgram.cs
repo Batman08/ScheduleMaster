@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using SM.MobileApp.Data;
 
 namespace SM.MobileApp
 {
@@ -18,11 +17,9 @@ namespace SM.MobileApp
             builder.Services.AddMauiBlazorWebView();
 
 #if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
-		builder.Logging.AddDebug();
+            builder.Services.AddBlazorWebViewDeveloperTools();
+            builder.Logging.AddDebug();
 #endif
-
-            builder.Services.AddSingleton<WeatherForecastService>();
 
             return builder.Build();
         }
