@@ -1,4 +1,6 @@
-﻿namespace SM.MobileApp
+﻿using System.Windows.Input;
+
+namespace SM.MobileApp
 {
     public partial class MainPage : ContentPage
     {
@@ -15,7 +17,20 @@
         {
             _webView.Source = _url;
             _webView.Navigated += OnWebViewNavigated;
-            Content = _webView;
+
+            RefreshView refreshView = new RefreshView();
+            ICommand refreshCommand = new Command(() =>
+            {
+                _webView.Reload();
+                refreshView.IsRefreshing = false;
+            });
+            refreshView.Command = refreshCommand;
+
+            ScrollView scrollView = new ScrollView();
+            scrollView.Content = _webView;
+            refreshView.Content = scrollView;
+
+            Content = refreshView;
         }
 
         protected override bool OnBackButtonPressed()
