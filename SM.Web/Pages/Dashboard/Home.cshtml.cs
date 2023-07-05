@@ -37,8 +37,8 @@ namespace SM.Web.Pages.Dashboard
         public JsonResult OnPostUpdateEvent([FromBody] SmEventItemUpdateDTO smEventData)
         {
             smEventData.UserId = new Guid(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value.ToString());
-            _homeModule.SmUpdateUserEvent(smEventData);
-            return new JsonResult(smEventData, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var result = _homeModule.SmUpdateUserEvent(smEventData);
+            return new JsonResult(result, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
         public JsonResult OnPostDeleteEvent([FromBody] SmEventItemIdDTO smEventData)

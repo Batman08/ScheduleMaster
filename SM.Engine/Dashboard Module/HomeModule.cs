@@ -14,20 +14,18 @@ namespace SM.Engine.DashboardModule
             _dashboardCommandsQueries = new DashboardCommandsQueries(_smRepository);
         }
 
-        //create function that checks all properties of object <T> has a value except info
         private bool SmCheckDataIsValid<T>(T data)
         {
             var properties = data!.GetType().GetProperties();
             foreach (var property in properties)
             {
-                if (property.Name != "Info")
-                {
-                    if (property.GetValue(data) == null || string.IsNullOrEmpty(property.GetValue(data)!.ToString()))
-                    {
-                        return false;
-                    }
-                }
+                bool isInfoProperty = property.Name == "Info";
+                if (isInfoProperty) continue;
+
+                bool isPropertyValueValid = property.GetValue(data) == null || string.IsNullOrEmpty(property.GetValue(data)!.ToString()) || string.IsNullOrWhiteSpace(property.GetValue(data)!.ToString());
+                if (isPropertyValueValid) return false;
             }
+
             return true;
         }
 
@@ -60,7 +58,6 @@ namespace SM.Engine.DashboardModule
                 }
             };
 
-
             if (SmCheckDataIsValid(smData))
                 _dashboardCommandsQueries.SaveEvent(dataToSave);
             else
@@ -69,7 +66,7 @@ namespace SM.Engine.DashboardModule
             return smEventFormResponseDTO;
         }
 
-        public void SmUpdateUserEvent(SmEventItemUpdateDTO smUpdateData)
+        public SmEventFormResponseDTO SmUpdateUserEvent(SmEventItemUpdateDTO smUpdateData)
         {
             var dataToSave = new SmEventDataUpdateDTO
             {
@@ -82,7 +79,28 @@ namespace SM.Engine.DashboardModule
                 End = smUpdateData.End,
                 Colour = smUpdateData.Colour
             };
-            _dashboardCommandsQueries.UpdateEvent(dataToSave);
+
+            //create object SmEventFormResponseDTO copying values of SmEventItemDTO
+            var smEventFormResponseDTO = new SmEventFormResponseDTO
+            {
+                SmEventItem = new SmEventItemResponseDTO
+                {
+                    EventDataId = smUpdateData.EventDataId,
+                    Day = smUpdateData.Day,
+                    Title = smUpdateData.Title,
+                    Info = smUpdateData.Info,
+                    Start = smUpdateData.Start,
+                    End = smUpdateData.End,
+                    Colour = smUpdateData.Colour
+                }
+            };
+
+            if (SmCheckDataIsValid(smUpdateData))
+                _dashboardCommandsQueries.UpdateEvent(dataToSave);
+            else
+                smEventFormResponseDTO.Message = "An error occured. One or more required fields were not filled out!";
+
+            return smEventFormResponseDTO;
         }
 
         public string SmDeleteUserEvent(SmEventItemIdDTO smData)

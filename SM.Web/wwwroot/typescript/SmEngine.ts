@@ -406,27 +406,36 @@ class SmEngine {
         Utilities.Sm_XMLHttpRequest(xhr, dataToServer);
     }
 
-    private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventReturnDataDTO, form: HTMLFormElement, eventEl: HTMLElement): void {
-        const textColour: string = Utilities.GetTextColourContrast(eventReturnData.Colour);
+    private HandleSubmitDone_UpdateEvent(eventReturnData: SmEventFormResponseDTO, form: HTMLFormElement, eventEl: HTMLElement): void {
+        const btnSubmit = form.querySelector("[type=submit]") as HTMLButtonElement;
+        if (eventReturnData.Message !== null) {
+            Utilities.EnableBtn(btnSubmit);
+            btnSubmit.innerHTML = this._createEventBtnText.Default;
+            this.DisplayFormSubmitErrorMessage(eventReturnData.Message)
+            return;
+        }
+        
+        const smEventData = eventReturnData.SmEventItem as SmEventReturnDataDTO;
+        const textColour: string = Utilities.GetTextColourContrast(smEventData.Colour);
 
         const title = eventEl.querySelector('#Title') as HTMLHeadElement;
-        title.textContent = eventReturnData.Title;
+        title.textContent = smEventData.Title;
         title.style.color = textColour;
 
         const info = eventEl.querySelector('#Info') as HTMLParagraphElement;
-        info.textContent = eventReturnData.Info;
+        info.textContent = smEventData.Info;
         info.style.color = textColour;
 
         const backgroundColour = eventEl as HTMLElement;
-        backgroundColour.style.backgroundColor = eventReturnData.Colour;
+        backgroundColour.style.backgroundColor = smEventData.Colour;
         backgroundColour.style.color = textColour;
 
         const startTime = eventEl.querySelector('#StartTime') as HTMLHeadElement;
-        startTime.textContent = eventReturnData.Start;
+        startTime.textContent = smEventData.Start;
         startTime.style.color = textColour;
 
         const endTime = eventEl.querySelector('#EndTime') as HTMLHeadElement;
-        endTime.textContent = eventReturnData.End;
+        endTime.textContent = smEventData.End;
         endTime.style.color = textColour;
 
         this.ReorderDayEvents(eventEl.parentElement);
