@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SM.Database;
@@ -6,6 +7,7 @@ using System.Text.Json;
 
 namespace SM.Web.Pages.Dashboard
 {
+    [Authorize]
     public class HomeModel : PageModel
     {
         private ISmRepository _smRepository;
@@ -19,11 +21,6 @@ namespace SM.Web.Pages.Dashboard
 
         public IActionResult OnGet()
         {
-            //check if user is authorized otherwise redirect to login page
-            if (!User.Identity!.IsAuthenticated || User.Identity == null)
-            {
-                return LocalRedirect(Url.Content("~/Auth/Account/Login"));
-            }
             return Page();
         }
 
