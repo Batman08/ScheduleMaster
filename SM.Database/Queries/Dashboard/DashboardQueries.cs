@@ -1,4 +1,4 @@
-﻿using SM.Database.DashboardCommandsQueries;
+﻿using SM.Database.DTOs;
 
 namespace SM.Database.Queries.Dashboard
 {

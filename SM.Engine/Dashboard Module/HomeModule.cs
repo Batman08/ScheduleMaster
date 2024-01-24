@@ -1,6 +1,6 @@
 ﻿using SM.Database;
 using SM.Database.Commands.Dashboard;
-using SM.Database.DashboardCommandsQueries;
+using SM.Database.DTOs;
 using SM.Database.Queries.Dashboard;
 
 namespace SM.Engine.DashboardModule
