@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SM.Database;
+using SM.Database.Commands.Dashboard;
+using SM.Database.Queries.Dashboard;
 using SM.Engine.DashboardModule;
 using System.Text.Json;
 
@@ -10,13 +11,11 @@ namespace SM.Web.Pages.Dashboard
     [Authorize]
     public class HomeModel : PageModel
     {
-        private ISmRepository _smRepository;
         private HomeModule _homeModule;
 
-        public HomeModel(ISmRepository smRepository)
+        public HomeModel(IDashboardCommands dashboardCommands, IDashboardQueries dashboardQueries)
         {
-            _smRepository = smRepository;
-            _homeModule = new HomeModule(_smRepository);
+            _homeModule = new HomeModule(dashboardCommands, dashboardQueries);
         }
 
         public IActionResult OnGet()

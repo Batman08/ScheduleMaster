@@ -1,17 +1,19 @@
 ﻿using SM.Database;
+using SM.Database.Commands.Dashboard;
 using SM.Database.DashboardCommandsQueries;
+using SM.Database.Queries.Dashboard;
 
 namespace SM.Engine.DashboardModule
 {
     public class HomeModule
     {
-        private ISmRepository _smRepository;
-        private DashboardCommandsQueries _dashboardCommandsQueries;
+        private IDashboardCommands _dashboardCommands;
+        private IDashboardQueries _dashboardQueries;
 
-        public HomeModule(ISmRepository smRepository)
+        public HomeModule(IDashboardCommands dashboardCommands, IDashboardQueries dashboardQueries)
         {
-            _smRepository = smRepository;
-            _dashboardCommandsQueries = new DashboardCommandsQueries(_smRepository);
+            _dashboardCommands = dashboardCommands;
+            _dashboardQueries = dashboardQueries;
         }
 
         private bool SmCheckDataIsValid<T>(T data)
@@ -59,7 +61,7 @@ namespace SM.Engine.DashboardModule
             };
 
             if (SmCheckDataIsValid(smData))
-                _dashboardCommandsQueries.SaveEvent(dataToSave);
+                _dashboardCommands.SpSaveUserEvent(dataToSave);
             else
                 smEventFormResponseDTO.Message = "An error occured. One or more required fields were not filled out!";
 
@@ -96,7 +98,7 @@ namespace SM.Engine.DashboardModule
             };
 
             if (SmCheckDataIsValid(smUpdateData))
-                _dashboardCommandsQueries.UpdateEvent(dataToSave);
+                _dashboardCommands.SpUpdateUserEvent(dataToSave);
             else
                 smEventFormResponseDTO.Message = "An error occured. One or more required fields were not filled out!";
 
@@ -110,12 +112,12 @@ namespace SM.Engine.DashboardModule
                 UserId = smData.UserId,
                 EventDataId = smData.EventDataId,
             };
-            return _dashboardCommandsQueries.DeleteEvent(dataToSave).First().Message;
+            return _dashboardCommands.SpDeleteUserEvent(dataToSave).First().Message;
         }
 
         public List<SpGetUserEventsReturnModel> SmLoadUserEvents(Guid userId)
         {
-            return _dashboardCommandsQueries.LoadEvents(userId);
+            return _dashboardQueries.SpLoadUserEvents(userId.ToString());
         }
 
         public List<SpGetUserEventReturnModel> SmLoadUserEvent(SmEventItemIdDTO smEventData)
@@ -125,7 +127,7 @@ namespace SM.Engine.DashboardModule
                 UserId = smEventData.UserId,
                 EventDataId = smEventData.EventDataId
             };
-            return _dashboardCommandsQueries.LoadEvent(loadEventData);
+            return _dashboardQueries.SpLoadUserEvent(loadEventData);
         }
     }
 }

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SM.Database;
+using SM.Database.Commands.Dashboard;
+using SM.Database.Queries.Dashboard;
 using SM.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +19,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddScoped<ISmRepository, SMRepository>();
 
+builder.Services.AddScoped<IDashboardCommands, DashboardCommands>();
+builder.Services.AddScoped<IDashboardQueries, DashboardQueries>();
 
 var app = builder.Build();
 
