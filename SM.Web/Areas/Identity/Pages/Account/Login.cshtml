@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-8 mx-auto">
         <section>
-            <form id="account" class="formRegisterPanel mt-md-5 ps-3 pe-3 pb-2" method="post">
+            <form id="account" class="formRegisterPanel mt-md-5 ps-3 pe-3 pb-2" method="post" onsubmit="Sm_OnSubmit()">
                 <h2>Log in to your account</h2>
                 <hr />
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="mb-3">
                     Don't have an account?
-                    <a class="icon-link icon-link-hover" href="/Auth/Account/Register" style="text-decoration: none;">
+                    <a class="icon-link icon-link-hover" href="/Identity/Account/Register" style="text-decoration: none;">
                         <span style="text-decoration: underline;">Sign Up</span>
                         <i class="bi fa-solid fa-arrow-right" style="text-decoration: none;"></i>
                     </a>
@@ -49,12 +49,10 @@
 
 <script src="~/js/Utilities.js"></script>
 <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
+    function Sm_OnSubmit() {
         const btnLoginSubmit = document.querySelector('#login-submit');
-        btnLoginSubmit.addEventListener('click', function (event) {
-            if (!Utilities.BindFormValidity('account')) return;
-            btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Logging in...`;
-            Utilities.RemoveBtnPointerEvents(btnLoginSubmit);
-        });
-    });
+        if (!Utilities.BindFormValidity('account')) return;
+        btnLoginSubmit.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Logging in...`;
+        Utilities.RemoveBtnPointerEvents(btnLoginSubmit);
+    }
 </script>
