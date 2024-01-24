@@ -6,7 +6,7 @@ namespace SM.MobileApp
     {
         private WebView _webView = new WebView();
 
-        private readonly string _url = "https://schedulemaster.bsite.net/";
+        private readonly string _url = "https://schedule1master.bsite.net/";
 
         public MainPage()
         {
