@@ -1,10 +1,20 @@
 ﻿@page
+@* @inject IWebHostEnvironment WebHostEnvironment *@
 @model IndexModel
 @{
     ViewData["Title"] = "Schedule Master";
 }
 
 <div class="pt-5">
+
+ @*    @if (WebHostEnvironment.IsDevelopment())
+    {
+        <div class="text-danger fw-bold"><em><i class="fa-solid fa-circle-exclamation"></i> @WebHostEnvironment.EnvironmentName Site</em></div>
+    }
+    else if (WebHostEnvironment.IsProduction())
+    {
+        <div class="text-primary fw-bold"><em>@WebHostEnvironment.EnvironmentName Site</em></div>
+    } *@
 
     <div class="text-center">
         <h4 class="">Stay organized and on track with Schedule Master. Effortlessly manage your schedule, plan your days, and maximize your productivity with ease.</h4>

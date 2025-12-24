@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-SM.Web-9bb9015e-f92c-40d8-ac8f-d950c4cff01a</UserSecretsId>
     <RootNamespace>SM.Web</RootNamespace>
+    <AssemblyTitle>SM.Web</AssemblyTitle>
+    <AssemblyName>SM.Web</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
