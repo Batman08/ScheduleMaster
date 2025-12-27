@@ -1,10 +1,14 @@
-﻿using System.Windows.Input;
+﻿#if ANDROID
+using Android.Webkit;
+#endif
+using System.Windows.Input;
+using WebView = Microsoft.Maui.Controls.WebView;
 
 namespace SM.MobileApp
 {
     public partial class MainPage : ContentPage
     {
-        private WebView _webView = new WebView();
+        private WebView _webView = new();
 
         private readonly string _url = "https://schedule1master.bsite.net/";
 
@@ -16,6 +20,7 @@ namespace SM.MobileApp
         private void InitWebView()
         {
             _webView.Source = _url;
+            _webView.Navigating += OnWebViewNavigating;
             _webView.Navigated += OnWebViewNavigated;
             Content = InitRefreshView();
         }
@@ -46,6 +51,23 @@ namespace SM.MobileApp
             return true;
         }
 
+        private async void OnWebViewNavigating(object sender, WebNavigatingEventArgs e)
+        {
+            var url = e.Url.ToLower();
+
+            var homeUri = new Uri(_url);
+            var currentUri = new Uri(e.Url);
+
+            bool isHomePage = homeUri.Scheme == currentUri.Scheme && homeUri.Host == currentUri.Host && homeUri.AbsolutePath.TrimEnd('/') == currentUri.AbsolutePath.TrimEnd('/');
+            if (isHomePage)
+            {
+                // Redirect to login instead
+                e.Cancel = true;
+                _webView.Source = url + UrlStr_Login();
+                return;
+            }
+        }
+
         private void OnWebViewNavigated(object sender, WebNavigatedEventArgs e)
         {
             /*create mobile marker if it doesn't exist*/
@@ -58,7 +80,8 @@ namespace SM.MobileApp
             }
         }
 
-        private bool Url_Login(WebNavigatedEventArgs e) => e.Url.Contains("/Auth/Account/Login");
+        private string UrlStr_Login() => "Identity/Account/Login";
+        private bool Url_Login(WebNavigatedEventArgs e) => e.Url.Contains($"/{UrlStr_Login()}");
 
         private string Javascript_MobileApp_CreateMarker() => "Utilities.MobileApp_CreateMarker();";
         private string Javascript_MobileApp_HideRememberMe() => "Utilities.MobileApp_HideRememberMe();";
